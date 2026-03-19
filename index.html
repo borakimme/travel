@@ -776,6 +776,13 @@ function init() {
   try {
     const saved = localStorage.getItem(LOCAL_KEY);
     if (saved) state = JSON.parse(saved);
+    if (!state.notes) state.notes = [];
+    if (!state.itinerary) state.itinerary = [];
+    if (!state.bookings) state.bookings = [];
+    if (!state.places) state.places = [];
+    if (!state.checklist) state.checklist = [];
+    if (!state.budget) state.budget = { preBudget:0, duringBudget:0, expenses:[] };
+    if (!state.budget.expenses) state.budget.expenses = [];
   } catch(e) {}
   if (state.checklist.length === 0) {
     state.checklist = DEFAULT_CHECKLIST.map((c,i) => ({id:'c'+i, category:c.cat, item:c.item, checked:false}));
