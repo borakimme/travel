@@ -685,6 +685,13 @@ function connectFirebase(cfg, roomId) {
         const current = JSON.stringify(state);
         if (incoming !== current) {
           state = data;
+          if (!state.notes) state.notes = [];
+          if (!state.itinerary) state.itinerary = [];
+          if (!state.bookings) state.bookings = [];
+          if (!state.places) state.places = [];
+          if (!state.checklist) state.checklist = [];
+          if (!state.budget) state.budget = { preBudget:0, duringBudget:0, expenses:[] };
+          if (!state.budget.expenses) state.budget.expenses = [];
           saveLocal();
           renderAll();
         }
@@ -1131,8 +1138,9 @@ function updateMyNameOptions() {
   const m2 = state.trip.m2||'여행자2';
   const cur = getMyName();
   sel.innerHTML = `<option value="">-- 선택 --</option>
-    <option value="${esc(m1)}" ${cur===m1?'selected':''}>${esc(m1)}</option>
-    <option value="${esc(m2)}" ${cur===m2?'selected':''}>${esc(m2)}</option>`;
+    <option value="${esc(m1)}">${esc(m1)}</option>
+    <option value="${esc(m2)}">${esc(m2)}</option>`;
+  sel.value = cur || '';
 }
 
 function renderNotes() {
