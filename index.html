@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>âï¸ ì°ë¦¬ì ì¬í íëë</title>
+<title>✈️ 우리의 여행 플래너</title>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <style>
@@ -11,7 +11,7 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR',sans-serif;background:#f0f4ff;color:var(--gray-800);font-size:15px;line-height:1.5;}
 
-/* ââ SETUP OVERLAY ââ */
+/* ── SETUP OVERLAY ── */
 .setup-overlay{position:fixed;inset:0;background:white;z-index:9999;overflow-y:auto;display:none;}
 .setup-inner{max-width:480px;margin:0 auto;padding:32px 20px 60px;}
 .setup-logo{text-align:center;margin-bottom:24px;}
@@ -34,10 +34,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR',sans
 .btn-setup:hover{opacity:.9;}
 .setup-error{background:#fef2f2;border:1.5px solid #fecaca;border-radius:var(--radius-sm);padding:10px 12px;font-size:13px;color:var(--danger);margin-top:8px;display:none;}
 
-/* ââ APP SHELL ââ */
+/* ── APP SHELL ── */
 .app{max-width:520px;margin:0 auto;min-height:100vh;background:white;display:flex;flex-direction:column;}
 
-/* ââ HEADER ââ */
+/* ── HEADER ── */
 .header{background:linear-gradient(135deg,#4f6ef7,#7c3aed);color:white;padding:18px 16px 12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(79,110,247,.3);}
 .header-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
 .header-title{font-size:19px;font-weight:800;letter-spacing:-.3px;}
@@ -52,24 +52,24 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR',sans
 .btn-room{background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.5);color:white;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;}
 .btn-room:hover{background:rgba(255,255,255,.35);}
 
-/* ââ TABS ââ */
+/* ── TABS ── */
 .tab-bar{display:flex;background:white;border-top:1px solid var(--gray-200);position:sticky;bottom:0;z-index:100;box-shadow:0 -2px 12px rgba(0,0,0,.06);}
 .tab-item{flex:1;display:flex;flex-direction:column;align-items:center;padding:7px 2px 6px;cursor:pointer;color:var(--gray-400);transition:.15s;font-size:9px;gap:2px;border:none;background:none;min-width:0;}
 .tab-item.active{color:var(--primary);}
 .tab-icon{font-size:18px;line-height:1;}
 .tab-label{font-weight:600;letter-spacing:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
 
-/* ââ CONTENT ââ */
+/* ── CONTENT ── */
 .content{flex:1;overflow-y:auto;padding:16px;}
 .section{display:none;}
 .section.active{display:block;}
 
-/* ââ CARDS ââ */
+/* ── CARDS ── */
 .card{background:white;border:1.5px solid var(--gray-200);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow-sm);}
 .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
 .card-title{font-weight:700;font-size:15px;color:var(--gray-800);}
 
-/* ââ FORMS ââ */
+/* ── FORMS ── */
 label{display:block;font-size:12px;font-weight:700;color:var(--gray-500);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;}
 input,select,textarea{width:100%;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);padding:10px 12px;font-size:14px;font-family:inherit;color:var(--gray-800);background:white;outline:none;transition:.15s;}
 input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(79,110,247,.12);}
@@ -78,7 +78,7 @@ textarea{resize:vertical;min-height:70px;}
 .form-group{margin-bottom:12px;}
 .form-group:last-child{margin-bottom:0;}
 
-/* ââ BUTTONS ââ */
+/* ── BUTTONS ── */
 .btn{display:inline-flex;align-items:center;gap:6px;border:none;border-radius:20px;padding:9px 18px;font-size:13px;font-weight:700;cursor:pointer;transition:.15s;font-family:inherit;}
 .btn-primary{background:var(--primary);color:white;}
 .btn-primary:hover{background:var(--primary-dark);}
@@ -91,20 +91,20 @@ textarea{resize:vertical;min-height:70px;}
 .btn-icon{background:none;border:none;cursor:pointer;padding:4px;border-radius:6px;font-size:15px;color:var(--gray-400);transition:.15s;}
 .btn-icon:hover{background:var(--gray-200);color:var(--gray-700);}
 
-/* ââ BADGES ââ */
+/* ── BADGES ── */
 .badge{display:inline-block;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:700;}
 .badge-blue{background:var(--primary-light);color:var(--primary);}
 .badge-green{background:#dcfce7;color:#15803d;}
 .badge-purple{background:#f5f3ff;color:#7c3aed;}
 .badge-gray{background:var(--gray-100);color:var(--gray-600);}
 
-/* ââ TRIP HERO ââ */
+/* ── TRIP HERO ── */
 .trip-hero{background:linear-gradient(135deg,#4f6ef7,#7c3aed);border-radius:var(--radius);padding:20px;color:white;margin-bottom:16px;text-align:center;}
 .trip-hero .emoji{font-size:40px;margin-bottom:8px;}
 .trip-hero h2{font-size:22px;font-weight:800;}
 .trip-hero p{font-size:13px;opacity:.8;margin-top:4px;}
 
-/* ââ ITINERARY ââ */
+/* ── ITINERARY ── */
 .day-block{margin-bottom:16px;}
 .day-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
 .day-dot{width:32px;height:32px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:12px;flex-shrink:0;}
@@ -116,7 +116,7 @@ textarea{resize:vertical;min-height:70px;}
 .itinerary-note{font-size:12px;color:var(--gray-500);margin-top:2px;}
 .item-actions{display:flex;gap:4px;flex-shrink:0;}
 
-/* ââ BUDGET ââ */
+/* ── BUDGET ── */
 .budget-summary{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1.5px solid #86efac;border-radius:var(--radius);padding:16px;margin-bottom:16px;}
 .budget-row{display:flex;justify-content:space-between;align-items:center;font-size:14px;margin-bottom:4px;}
 .budget-row:last-child{margin-bottom:0;}
@@ -138,14 +138,14 @@ textarea{resize:vertical;min-height:70px;}
 .phase-title-bar.pre{background:#f5f3ff;color:#6d28d9;}
 .phase-title-bar.during{background:var(--primary-light);color:var(--primary);}
 
-/* ââ BOOKING ââ */
+/* ── BOOKING ── */
 .booking-item{padding:14px;background:var(--gray-50);border-radius:var(--radius-sm);margin-bottom:10px;border:1.5px solid var(--gray-200);}
 .booking-name{font-weight:700;font-size:15px;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
 .booking-detail{font-size:13px;color:var(--gray-500);margin-bottom:3px;display:flex;gap:8px;}
 .booking-detail strong{color:var(--gray-700);}
 .booking-code{font-family:monospace;background:var(--primary-light);color:var(--primary);padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;}
 
-/* ââ CHECKLIST ââ */
+/* ── CHECKLIST ── */
 .check-category{font-size:12px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.5px;margin:14px 0 8px;}
 .check-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--gray-50);border-radius:var(--radius-sm);margin-bottom:5px;border:1.5px solid var(--gray-200);cursor:pointer;transition:.15s;}
 .check-item.checked{background:#f0fdf4;border-color:#86efac;}
@@ -158,7 +158,7 @@ textarea{resize:vertical;min-height:70px;}
 .check-progress{text-align:center;font-size:13px;color:var(--gray-500);margin-bottom:12px;}
 .check-progress strong{color:var(--success);font-size:16px;}
 
-/* ââ PLACES ââ */
+/* ── PLACES ── */
 .place-item{display:flex;gap:12px;padding:12px 14px;background:var(--gray-50);border-radius:var(--radius-sm);margin-bottom:8px;border:1.5px solid var(--gray-200);}
 .place-emoji{font-size:24px;flex-shrink:0;}
 .place-content{flex:1;}
@@ -167,13 +167,13 @@ textarea{resize:vertical;min-height:70px;}
 .place-note{font-size:13px;color:var(--gray-600);}
 .star{cursor:pointer;font-size:16px;}
 
-/* ââ TIPS ââ */
+/* ── TIPS ── */
 .tip-item{padding:14px;background:linear-gradient(135deg,#fffbeb,#fef3c7);border:1.5px solid #fcd34d;border-radius:var(--radius-sm);margin-bottom:10px;}
 .tip-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;}
 .tip-body{font-size:13px;color:var(--gray-700);line-height:1.6;}
 .tip-addr{font-size:12px;color:var(--gray-400);margin-top:4px;}
 
-/* ââ NOTES ââ */
+/* ── NOTES ── */
 .note-item{padding:14px;background:white;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);margin-bottom:10px;box-shadow:var(--shadow-sm);}
 .note-item.mine{border-left:4px solid var(--primary);background:var(--primary-light);}
 .note-item.theirs{border-left:4px solid var(--accent);background:#fff5f2;}
@@ -191,7 +191,7 @@ textarea{resize:vertical;min-height:70px;}
 .note-my-badge{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--gray-500);margin-bottom:8px;}
 .note-my-badge select{padding:4px 8px;border:1.5px solid var(--gray-200);border-radius:20px;font-size:12px;font-weight:700;color:var(--primary);background:var(--primary-light);outline:none;cursor:pointer;}
 
-/* ââ MODAL ââ */
+/* ── MODAL ── */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:.2s;}
 .modal-overlay.open{opacity:1;pointer-events:auto;}
 .modal{background:white;border-radius:20px 20px 0 0;width:100%;max-width:520px;padding:20px 16px 32px;max-height:85vh;overflow-y:auto;transform:translateY(40px);transition:.2s;}
@@ -201,21 +201,21 @@ textarea{resize:vertical;min-height:70px;}
 .modal-actions{display:flex;gap:8px;margin-top:16px;}
 .modal-actions .btn{flex:1;justify-content:center;}
 
-/* ââ AMOUNT INPUT ââ */
+/* ── AMOUNT INPUT ── */
 .amount-wrapper{position:relative;}
 .amount-prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--gray-400);font-weight:700;font-size:15px;}
 .amount-input{padding-left:28px!important;}
 
-/* ââ EMPTY ââ */
+/* ── EMPTY ── */
 .empty{text-align:center;padding:32px 16px;color:var(--gray-400);}
 .empty-icon{font-size:40px;margin-bottom:8px;}
 .empty p{font-size:14px;}
 
-/* ââ TOAST ââ */
+/* ── TOAST ── */
 .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--gray-800);color:white;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;opacity:0;transition:.25s;z-index:300;pointer-events:none;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-/* ââ ROOM CODE BOX ââ */
+/* ── ROOM CODE BOX ── */
 .room-code-box{background:var(--primary-light);border:2px solid var(--primary);border-radius:var(--radius);padding:16px;text-align:center;margin-bottom:14px;}
 .room-code-label{font-size:12px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
 .room-code-value{font-size:28px;font-weight:900;color:var(--primary);letter-spacing:4px;font-family:monospace;}
@@ -228,207 +228,207 @@ textarea{resize:vertical;min-height:70px;}
 </head>
 <body>
 
-<!-- âââââââââââââââââââ SETUP OVERLAY âââââââââââââââââââ -->
+<!-- ═══════════════════ SETUP OVERLAY ═══════════════════ -->
 <div class="setup-overlay" id="setupOverlay">
   <div class="setup-inner">
     <div class="setup-logo">
-      <span class="emoji">âï¸</span>
-      <h1>ì°ë¦¬ì ì¬í íëë</h1>
-      <p>ì¤ìê° ê³µì  ì¬í íëë â ì²ì í ë²ë§ ì¤ì íì¸ì</p>
+      <span class="emoji">✈️</span>
+      <h1>우리의 여행 플래너</h1>
+      <p>실시간 공유 여행 플래너 — 처음 한 번만 설정하세요</p>
     </div>
 
-    <!-- í­: ìë¡ ë§ë¤ê¸° / ì°¸ì¬íê¸° -->
+    <!-- 탭: 새로 만들기 / 참여하기 -->
     <div class="setup-tab-row">
-      <button class="setup-tab active" onclick="switchSetupTab('create')" id="tabCreate">ð ì ì¬íë°© ë§ë¤ê¸°</button>
-      <button class="setup-tab" onclick="switchSetupTab('join')" id="tabJoin">ð ê¸°ì¡´ ë°© ì°¸ì¬</button>
+      <button class="setup-tab active" onclick="switchSetupTab('create')" id="tabCreate">🌟 새 여행방 만들기</button>
+      <button class="setup-tab" onclick="switchSetupTab('join')" id="tabJoin">🔑 기존 방 참여</button>
     </div>
 
-    <!-- ì ì¬íë°© ë§ë¤ê¸° -->
+    <!-- 새 여행방 만들기 -->
     <div class="setup-panel active" id="panelCreate">
       <div class="setup-card" style="background:#eef1ff;border-color:#c7d2fe;margin-bottom:12px;">
-        <p style="font-size:13px;color:#4338ca;line-height:1.6;">â¨ ì¬íë°©ì ë§ë¤ë©´ <strong>ê³ ì í ë°© ì½ë</strong>ê° ìì±ë©ëë¤.<br>ìëë°©ìê² ì½ëë¥¼ ê³µì íë©´ ì¤ìê°ì¼ë¡ í¨ê» ìì í  ì ìì´ì!</p>
+        <p style="font-size:13px;color:#4338ca;line-height:1.6;">✨ 여행방을 만들면 <strong>고유한 방 코드</strong>가 생성됩니다.<br>상대방에게 코드를 공유하면 실시간으로 함께 수정할 수 있어요!</p>
       </div>
       <div id="errorCreate" class="setup-error"></div>
-      <button class="btn-setup" onclick="doCreate()">âï¸ ì¬íë°© ë§ë¤ê¸°</button>
+      <button class="btn-setup" onclick="doCreate()">✈️ 여행방 만들기</button>
     </div>
 
-    <!-- ê¸°ì¡´ ë°© ì°¸ì¬ -->
+    <!-- 기존 방 참여 -->
     <div class="setup-panel" id="panelJoin">
       <div class="form-group">
-        <label>ì¬íë°© ì½ë (ìëë°©ìê² ë°ì ì½ë)</label>
-        <input type="text" id="joinRoomCode" placeholder="ì: TRIP-3847" style="font-size:18px;font-weight:700;text-align:center;letter-spacing:2px;">
+        <label>여행방 코드 (상대방에게 받은 코드)</label>
+        <input type="text" id="joinRoomCode" placeholder="예: TRIP-3847" style="font-size:18px;font-weight:700;text-align:center;letter-spacing:2px;">
       </div>
       <div id="errorJoin" class="setup-error"></div>
-      <button class="btn-setup" onclick="doJoin()">ð ì¬íë°© ì°¸ì¬íê¸°</button>
+      <button class="btn-setup" onclick="doJoin()">🔑 여행방 참여하기</button>
     </div>
   </div>
 </div>
 
-<!-- âââââââââââââââââââ APP âââââââââââââââââââ -->
+<!-- ═══════════════════ APP ═══════════════════ -->
 <div class="app">
   <div class="header">
     <div class="header-top">
       <div>
-        <div class="header-title" id="headerTitle">âï¸ ì°ë¦¬ì ì¬í</div>
-        <div class="header-meta" id="headerMeta">ë¡ë© ì¤...</div>
+        <div class="header-title" id="headerTitle">✈️ 우리의 여행</div>
+        <div class="header-meta" id="headerMeta">로딩 중...</div>
       </div>
       <div class="header-right">
-        <span class="sync-dot gray" id="syncDot" title="ëê¸°í ìí"></span>
-        <button class="btn-room" onclick="openModal('modal-room')">ð ì½ë ê³µì </button>
+        <span class="sync-dot gray" id="syncDot" title="동기화 상태"></span>
+        <button class="btn-room" onclick="openModal('modal-room')">🔑 코드 공유</button>
       </div>
     </div>
   </div>
 
   <div class="content" id="mainContent">
 
-    <!-- â SECTION: TRIP â -->
+    <!-- ─ SECTION: TRIP ─ -->
     <div class="section active" id="section-trip">
       <div class="trip-hero">
-        <div class="emoji">ð</div>
-        <h2 id="heroTitle">ì´ëë¡ ë ëë³¼ê¹ì?</h2>
-        <p id="heroSub">ì¬í ê¸°ë³¸ ì ë³´ë¥¼ ìë ¥íë©´ ììë©ëë¤</p>
+        <div class="emoji">🌍</div>
+        <h2 id="heroTitle">어디로 떠나볼까요?</h2>
+        <p id="heroSub">여행 기본 정보를 입력하면 시작됩니다</p>
       </div>
       <div class="card">
-        <div class="card-header"><div class="card-title">ì¬í ê¸°ë³¸ ì ë³´</div></div>
+        <div class="card-header"><div class="card-title">여행 기본 정보</div></div>
         <div class="form-group">
-          <label>ì¬í ì´ë¦ âï¸</label>
-          <input type="text" id="tripName" placeholder="ì: ëì¿ ë²ê½ ì¬í" oninput="updateTrip()">
+          <label>여행 이름 ✏️</label>
+          <input type="text" id="tripName" placeholder="예: 도쿄 벚꽃 여행" oninput="updateTrip()">
         </div>
         <div class="form-group">
-          <label>ëª©ì ì§ ð</label>
-          <input type="text" id="tripDestination" placeholder="ì: ì¼ë³¸ ëì¿" oninput="updateTrip()">
+          <label>목적지 📍</label>
+          <input type="text" id="tripDestination" placeholder="예: 일본 도쿄" oninput="updateTrip()">
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label>ì¶ë°ì¼ ð</label>
+            <label>출발일 📅</label>
             <input type="date" id="tripStart" onchange="updateTrip()">
           </div>
           <div class="form-group">
-            <label>ê·êµ­ì¼ ð</label>
+            <label>귀국일 📅</label>
             <input type="date" id="tripEnd" onchange="updateTrip()">
           </div>
         </div>
         <div class="form-group">
-          <label>ì¬í ë©ëª¨ ð</label>
-          <textarea id="tripMemo" placeholder="ì¬í íë§, í¹ë³í ì  ë±..." oninput="updateTrip()"></textarea>
+          <label>여행 메모 📝</label>
+          <textarea id="tripMemo" placeholder="여행 테마, 특별한 점 등..." oninput="updateTrip()"></textarea>
         </div>
       </div>
       <div class="card">
-        <div class="card-header"><div class="card-title">ì¬íì ì ë³´ ð¥</div></div>
+        <div class="card-header"><div class="card-title">여행자 정보 👥</div></div>
         <div class="form-row">
           <div class="form-group">
-            <label>ì¬íì 1 ð§</label>
-            <input type="text" id="member1" placeholder="ì´ë¦ ìë ¥" oninput="updateTrip()">
+            <label>여행자 1 🧑</label>
+            <input type="text" id="member1" placeholder="이름 입력" oninput="updateTrip()">
           </div>
           <div class="form-group">
-            <label>ì¬íì 2 ð§</label>
-            <input type="text" id="member2" placeholder="ì´ë¦ ìë ¥" oninput="updateTrip()">
+            <label>여행자 2 🧑</label>
+            <input type="text" id="member2" placeholder="이름 입력" oninput="updateTrip()">
           </div>
         </div>
       </div>
       <div class="card">
-        <div class="card-header"><div class="card-title">âï¸ ì± ì¤ì </div></div>
-        <button class="btn btn-outline btn-sm" onclick="openModal('modal-room')" style="margin-right:8px;">ð ì¬íë°© ì½ë íì¸</button>
-        <button class="btn btn-danger btn-sm" onclick="resetSetup()">ð ë¤ë¥¸ ë°©ì¼ë¡</button>
+        <div class="card-header"><div class="card-title">⚙️ 앱 설정</div></div>
+        <button class="btn btn-outline btn-sm" onclick="openModal('modal-room')" style="margin-right:8px;">🔑 여행방 코드 확인</button>
+        <button class="btn btn-danger btn-sm" onclick="resetSetup()">🔄 다른 방으로</button>
       </div>
     </div>
 
-    <!-- â SECTION: ITINERARY â -->
+    <!-- ─ SECTION: ITINERARY ─ -->
     <div class="section" id="section-itinerary">
       <div id="itineraryContent"></div>
-      <button class="btn-add" onclick="openAddItinerary()">+ ì¼ì  ì¶ê°íê¸°</button>
+      <button class="btn-add" onclick="openAddItinerary()">+ 일정 추가하기</button>
     </div>
 
-    <!-- â SECTION: BUDGET â -->
+    <!-- ─ SECTION: BUDGET ─ -->
     <div class="section" id="section-budget">
       <div class="card">
-        <div class="card-header"><div class="card-title">ìì° ì¤ì  ð°</div></div>
+        <div class="card-header"><div class="card-title">예산 설정 💰</div></div>
         <div class="form-row">
           <div class="form-group">
-            <label>ðï¸ ì¬ì  ìì° (ì)</label>
+            <label>🗓️ 사전 예산 (원)</label>
             <div class="amount-wrapper">
-              <span class="amount-prefix">â©</span>
+              <span class="amount-prefix">₩</span>
               <input type="number" id="preBudget" class="amount-input" placeholder="0" onchange="updateBudget()">
             </div>
           </div>
           <div class="form-group">
-            <label>âï¸ ì¬í ì¤ ìì° (ì)</label>
+            <label>✈️ 여행 중 예산 (원)</label>
             <div class="amount-wrapper">
-              <span class="amount-prefix">â©</span>
+              <span class="amount-prefix">₩</span>
               <input type="number" id="duringBudget" class="amount-input" placeholder="0" onchange="updateBudget()">
             </div>
           </div>
         </div>
       </div>
       <div id="budgetSummaryBlock"></div>
-      <div class="phase-title-bar pre" id="phaseHeaderPre" style="display:none;">ðï¸ ì¬ì  ì§ì¶ <span id="preSpentBadge" class="badge badge-purple"></span></div>
+      <div class="phase-title-bar pre" id="phaseHeaderPre" style="display:none;">🗓️ 사전 지출 <span id="preSpentBadge" class="badge badge-purple"></span></div>
       <div id="expenseListPre"></div>
-      <button class="btn-add" id="btnAddPre" onclick="openAddExpense('pre')" style="margin-bottom:16px;">+ ì¬ì  ì§ì¶ ì¶ê°</button>
-      <div class="phase-title-bar during" id="phaseHeaderDuring" style="display:none;">âï¸ ì¬í ì¤ ì§ì¶ <span id="duringSpentBadge" class="badge badge-blue"></span></div>
+      <button class="btn-add" id="btnAddPre" onclick="openAddExpense('pre')" style="margin-bottom:16px;">+ 사전 지출 추가</button>
+      <div class="phase-title-bar during" id="phaseHeaderDuring" style="display:none;">✈️ 여행 중 지출 <span id="duringSpentBadge" class="badge badge-blue"></span></div>
       <div id="expenseListDuring"></div>
-      <button class="btn-add" onclick="openAddExpense('during')">+ ì¬í ì¤ ì§ì¶ ì¶ê°</button>
+      <button class="btn-add" onclick="openAddExpense('during')">+ 여행 중 지출 추가</button>
     </div>
 
-    <!-- â SECTION: BOOKING â -->
+    <!-- ─ SECTION: BOOKING ─ -->
     <div class="section" id="section-booking">
       <div style="display:flex;gap:8px;margin-bottom:14px;">
-        <button class="btn btn-primary btn-sm" onclick="openAddBooking('accommodation')">ð¨ ìì ì¶ê°</button>
-        <button class="btn btn-outline btn-sm" onclick="openAddBooking('transport')">âï¸ êµíµ ì¶ê°</button>
+        <button class="btn btn-primary btn-sm" onclick="openAddBooking('accommodation')">🏨 숙소 추가</button>
+        <button class="btn btn-outline btn-sm" onclick="openAddBooking('transport')">✈️ 교통 추가</button>
       </div>
       <div id="bookingList"></div>
     </div>
 
-    <!-- â SECTION: CHECKLIST â -->
+    <!-- ─ SECTION: CHECKLIST ─ -->
     <div class="section" id="section-checklist">
       <div class="check-progress" id="checkProgress"></div>
       <div id="checklistContent"></div>
-      <button class="btn-add" onclick="openAddCheck()">+ í­ëª© ì¶ê°íê¸°</button>
+      <button class="btn-add" onclick="openAddCheck()">+ 항목 추가하기</button>
     </div>
 
-    <!-- â SECTION: PLACES â -->
+    <!-- ─ SECTION: PLACES ─ -->
     <div class="section" id="section-places">
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
-        <button class="btn btn-primary btn-sm" onclick="openAddPlace('restaurant')">ð½ï¸ ìë¹</button>
-        <button class="btn btn-outline btn-sm" onclick="openAddPlace('attraction')">ðºï¸ ê´ê´ì§</button>
-        <button class="btn btn-outline btn-sm" onclick="openAddPlace('shop')">ðï¸ ì¼í</button>
+        <button class="btn btn-primary btn-sm" onclick="openAddPlace('restaurant')">🍽️ 식당</button>
+        <button class="btn btn-outline btn-sm" onclick="openAddPlace('attraction')">🗺️ 관광지</button>
+        <button class="btn btn-outline btn-sm" onclick="openAddPlace('shop')">🛍️ 쇼핑</button>
       </div>
       <div id="placeList"></div>
     </div>
 
-    <!-- â SECTION: TIPS â -->
+    <!-- ─ SECTION: TIPS ─ -->
     <div class="section" id="section-tips">
       <div style="margin-bottom:14px;">
-        <button class="btn btn-primary btn-sm" onclick="openAddPlace('tip')">ð¡ í/ì ë³´ ì¶ê°</button>
+        <button class="btn btn-primary btn-sm" onclick="openAddPlace('tip')">💡 팁/정보 추가</button>
       </div>
       <div id="tipList"></div>
     </div>
 
-    <!-- â SECTION: NOTES â -->
+    <!-- ─ SECTION: NOTES ─ -->
     <div class="section" id="section-notes">
       <div id="noteMyBar" class="note-my-badge">
-        <span>ë´ ì´ë¦:</span>
+        <span>내 이름:</span>
         <select id="myNameSelect" onchange="saveMyName()">
-          <option value="">-- ì í --</option>
+          <option value="">-- 선택 --</option>
         </select>
       </div>
       <div id="noteList"></div>
       <div class="note-input-bar">
-        <textarea id="noteInput" placeholder="ë©ëª¨ë¥¼ ìë ¥íì¸ì..." rows="1" oninput="autoResizeNote(this)"></textarea>
-        <button class="note-send-btn" onclick="saveNote()">â¤</button>
+        <textarea id="noteInput" placeholder="메모를 입력하세요..." rows="1" oninput="autoResizeNote(this)"></textarea>
+        <button class="note-send-btn" onclick="saveNote()">➤</button>
       </div>
     </div>
 
   </div><!-- /content -->
 
   <div class="tab-bar">
-    <button class="tab-item active" onclick="switchTab('trip',this)"><span class="tab-icon">ðï¸</span><span class="tab-label">ì¬íì ë³´</span></button>
-    <button class="tab-item" onclick="switchTab('itinerary',this)"><span class="tab-icon">ð</span><span class="tab-label">ì¼ì </span></button>
-    <button class="tab-item" onclick="switchTab('budget',this)"><span class="tab-icon">ð°</span><span class="tab-label">ìì°</span></button>
-    <button class="tab-item" onclick="switchTab('booking',this)"><span class="tab-icon">ð¨</span><span class="tab-label">ìì/êµíµ</span></button>
-    <button class="tab-item" onclick="switchTab('checklist',this)"><span class="tab-icon">â</span><span class="tab-label">ì²´í¬ë¦¬ì¤í¸</span></button>
-    <button class="tab-item" onclick="switchTab('places',this)"><span class="tab-icon">ð</span><span class="tab-label">ì¥ì</span></button>
-    <button class="tab-item" onclick="switchTab('tips',this)"><span class="tab-icon">ð¡</span><span class="tab-label">í/ì ë³´</span></button>
-    <button class="tab-item" onclick="switchTab('notes',this)"><span class="tab-icon">ð</span><span class="tab-label">ë©ëª¨</span></button>
+    <button class="tab-item active" onclick="switchTab('trip',this)"><span class="tab-icon">🏖️</span><span class="tab-label">여행정보</span></button>
+    <button class="tab-item" onclick="switchTab('itinerary',this)"><span class="tab-icon">📅</span><span class="tab-label">일정</span></button>
+    <button class="tab-item" onclick="switchTab('budget',this)"><span class="tab-icon">💰</span><span class="tab-label">예산</span></button>
+    <button class="tab-item" onclick="switchTab('booking',this)"><span class="tab-icon">🏨</span><span class="tab-label">숙소/교통</span></button>
+    <button class="tab-item" onclick="switchTab('checklist',this)"><span class="tab-icon">✅</span><span class="tab-label">체크리스트</span></button>
+    <button class="tab-item" onclick="switchTab('places',this)"><span class="tab-icon">📍</span><span class="tab-label">장소</span></button>
+    <button class="tab-item" onclick="switchTab('tips',this)"><span class="tab-icon">💡</span><span class="tab-label">팁/정보</span></button>
+    <button class="tab-item" onclick="switchTab('notes',this)"><span class="tab-icon">📝</span><span class="tab-label">메모</span></button>
   </div>
 </div>
 
@@ -436,19 +436,19 @@ textarea{resize:vertical;min-height:70px;}
 <div class="modal-overlay" id="modal-room">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title">ð ì¬íë°© ê³µì </div>
+    <div class="modal-title">🔑 여행방 공유</div>
     <div class="room-code-box">
-      <div class="room-code-label">ì¬íë°© ì½ë</div>
+      <div class="room-code-label">여행방 코드</div>
       <div class="room-code-value" id="roomCodeDisplay">-</div>
     </div>
     <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">
-      ì ì½ëë¥¼ <strong>ì¹´ì¹´ì¤í¡</strong>ì¼ë¡ ì ë¬íì¸ì!<br>
-      ìëë°©ì´ ì´ HTML íì¼ì ì´ê³  ì½ëë¥¼ ìë ¥íë©´<br>
-      ëª¨ë  ë´ì©ì´ <strong>ì¤ìê°ì¼ë¡ ëê¸°í</strong>ë©ëë¤.
+      위 코드를 <strong>카카오톡</strong>으로 전달하세요!<br>
+      상대방이 이 HTML 파일을 열고 코드를 입력하면<br>
+      모든 내용이 <strong>실시간으로 동기화</strong>됩니다.
     </p>
-    <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="copyRoomCode()">ð ì½ë ë³µì¬íê¸°</button>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="copyRoomCode()">📋 코드 복사하기</button>
     <div style="margin-top:8px;">
-      <button class="btn btn-outline" style="width:100%;justify-content:center;margin-top:0;" onclick="closeModal('modal-room')">ë«ê¸°</button>
+      <button class="btn btn-outline" style="width:100%;justify-content:center;margin-top:0;" onclick="closeModal('modal-room')">닫기</button>
     </div>
   </div>
 </div>
@@ -456,24 +456,24 @@ textarea{resize:vertical;min-height:70px;}
 <div class="modal-overlay" id="modal-itinerary">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title">ð ì¼ì  ì¶ê°</div>
-    <div class="form-group"><label>ë ì§</label><input type="date" id="iDate"></div>
+    <div class="modal-title">📅 일정 추가</div>
+    <div class="form-group"><label>날짜</label><input type="date" id="iDate"></div>
     <div class="form-row">
-      <div class="form-group"><label>ìê°</label><input type="time" id="iTime"></div>
-      <div class="form-group"><label>ì¹´íê³ ë¦¬</label>
+      <div class="form-group"><label>시간</label><input type="time" id="iTime"></div>
+      <div class="form-group"><label>카테고리</label>
         <select id="iCategory">
-          <option value="ð½ï¸">ð½ï¸ ìì¬</option><option value="ðºï¸">ðºï¸ ê´ê´</option>
-          <option value="ðï¸">ðï¸ ì¼í</option><option value="ð¨">ð¨ ìì</option>
-          <option value="âï¸">âï¸ ì´ë</option><option value="â">â ì¹´í</option>
-          <option value="ð­">ð­ ì²´í</option><option value="ð">ð ê¸°í</option>
+          <option value="🍽️">🍽️ 식사</option><option value="🗺️">🗺️ 관광</option>
+          <option value="🛍️">🛍️ 쇼핑</option><option value="🏨">🏨 숙소</option>
+          <option value="✈️">✈️ 이동</option><option value="☕">☕ 카페</option>
+          <option value="🎭">🎭 체험</option><option value="📌">📌 기타</option>
         </select>
       </div>
     </div>
-    <div class="form-group"><label>íëëª</label><input type="text" id="iActivity" placeholder="ì: ì ì£¼ì¿  ì ì¬"></div>
-    <div class="form-group"><label>ë©ëª¨ (ì í)</label><input type="text" id="iNote" placeholder="ì: ìì½ íì, ì£¼ì ë±"></div>
+    <div class="form-group"><label>활동명</label><input type="text" id="iActivity" placeholder="예: 신주쿠 점심"></div>
+    <div class="form-group"><label>메모 (선택)</label><input type="text" id="iNote" placeholder="예: 예약 필요, 주소 등"></div>
     <div class="modal-actions">
-      <button class="btn btn-outline" onclick="closeModal('modal-itinerary')">ì·¨ì</button>
-      <button class="btn btn-primary" onclick="saveItinerary()">ì ì¥</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-itinerary')">취소</button>
+      <button class="btn btn-primary" onclick="saveItinerary()">저장</button>
     </div>
   </div>
 </div>
@@ -481,37 +481,37 @@ textarea{resize:vertical;min-height:70px;}
 <div class="modal-overlay" id="modal-expense">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title" id="expenseModalTitle">ð° ì§ì¶ ì¶ê°</div>
+    <div class="modal-title" id="expenseModalTitle">💰 지출 추가</div>
     <input type="hidden" id="ePhase" value="pre">
-    <div class="form-group"><label>ë ì§</label><input type="date" id="eDate"></div>
+    <div class="form-group"><label>날짜</label><input type="date" id="eDate"></div>
     <div class="form-row">
-      <div class="form-group"><label>ì¹´íê³ ë¦¬</label>
+      <div class="form-group"><label>카테고리</label>
         <select id="eCategory">
-          <option value="ð½ï¸ ìë¹">ð½ï¸ ìë¹</option><option value="âï¸ êµíµ">âï¸ êµíµ</option>
-          <option value="ð¨ ìë°">ð¨ ìë°</option><option value="ðï¸ ì¼í">ðï¸ ì¼í</option>
-          <option value="ð­ ì²´í">ð­ ì²´í</option><option value="â ì¹´í">â ì¹´í</option>
-          <option value="ð ìë£">ð ìë£</option><option value="ð ê¸°í">ð ê¸°í</option>
+          <option value="🍽️ 식비">🍽️ 식비</option><option value="✈️ 교통">✈️ 교통</option>
+          <option value="🏨 숙박">🏨 숙박</option><option value="🛍️ 쇼핑">🛍️ 쇼핑</option>
+          <option value="🎭 체험">🎭 체험</option><option value="☕ 카페">☕ 카페</option>
+          <option value="💊 의료">💊 의료</option><option value="📌 기타">📌 기타</option>
         </select>
       </div>
-      <div class="form-group"><label>ê¸ì¡ (ì)</label>
+      <div class="form-group"><label>금액 (원)</label>
         <div class="amount-wrapper">
-          <span class="amount-prefix">â©</span>
+          <span class="amount-prefix">₩</span>
           <input type="number" id="eAmount" class="amount-input" placeholder="0">
         </div>
       </div>
     </div>
-    <div class="form-group"><label>ë´ì©</label><input type="text" id="eDesc" placeholder="ì: ë¼ë© ì ì¬"></div>
-    <div class="form-group"><label>ê²°ì ì</label>
+    <div class="form-group"><label>내용</label><input type="text" id="eDesc" placeholder="예: 라멘 점심"></div>
+    <div class="form-group"><label>결제자</label>
       <select id="ePayer">
-        <option value="">ì í</option>
+        <option value="">선택</option>
         <option id="payerOpt1"></option>
         <option id="payerOpt2"></option>
-        <option value="ê³µë">ê³µë</option>
+        <option value="공동">공동</option>
       </select>
     </div>
     <div class="modal-actions">
-      <button class="btn btn-outline" onclick="closeModal('modal-expense')">ì·¨ì</button>
-      <button class="btn btn-primary" onclick="saveExpense()">ì ì¥</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-expense')">취소</button>
+      <button class="btn btn-primary" onclick="saveExpense()">저장</button>
     </div>
   </div>
 </div>
@@ -519,18 +519,18 @@ textarea{resize:vertical;min-height:70px;}
 <div class="modal-overlay" id="modal-booking">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title" id="bookingModalTitle">ð¨ ìì ì¶ê°</div>
+    <div class="modal-title" id="bookingModalTitle">🏨 숙소 추가</div>
     <input type="hidden" id="bookingType">
-    <div class="form-group"><label>ì´ë¦</label><input type="text" id="bName" placeholder="ì: ì ì£¼ì¿  í¸í"></div>
+    <div class="form-group"><label>이름</label><input type="text" id="bName" placeholder="예: 신주쿠 호텔"></div>
     <div class="form-row">
-      <div class="form-group"><label>ë ì§/ìê° (ìì)</label><input type="datetime-local" id="bFrom"></div>
-      <div class="form-group"><label>ë ì§/ìê° (ì¢ë£)</label><input type="datetime-local" id="bTo"></div>
+      <div class="form-group"><label>날짜/시간 (시작)</label><input type="datetime-local" id="bFrom"></div>
+      <div class="form-group"><label>날짜/시간 (종료)</label><input type="datetime-local" id="bTo"></div>
     </div>
-    <div class="form-group"><label>ìì½ë²í¸</label><input type="text" id="bCode" placeholder="ì: ABC123"></div>
-    <div class="form-group"><label>ì£¼ì / ë©ëª¨</label><textarea id="bNote" placeholder="ì£¼ì, ì íë²í¸, ë©ëª¨ ë±"></textarea></div>
+    <div class="form-group"><label>예약번호</label><input type="text" id="bCode" placeholder="예: ABC123"></div>
+    <div class="form-group"><label>주소 / 메모</label><textarea id="bNote" placeholder="주소, 전화번호, 메모 등"></textarea></div>
     <div class="modal-actions">
-      <button class="btn btn-outline" onclick="closeModal('modal-booking')">ì·¨ì</button>
-      <button class="btn btn-primary" onclick="saveBooking()">ì ì¥</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-booking')">취소</button>
+      <button class="btn btn-primary" onclick="saveBooking()">저장</button>
     </div>
   </div>
 </div>
@@ -538,18 +538,18 @@ textarea{resize:vertical;min-height:70px;}
 <div class="modal-overlay" id="modal-check">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title">â ì²´í¬ë¦¬ì¤í¸ í­ëª© ì¶ê°</div>
-    <div class="form-group"><label>ì¹´íê³ ë¦¬</label>
-      <input type="text" id="cCategory" list="catList" placeholder="ì: ìë¥, ìë¥, ì¸ë©´ëêµ¬">
+    <div class="modal-title">✅ 체크리스트 항목 추가</div>
+    <div class="form-group"><label>카테고리</label>
+      <input type="text" id="cCategory" list="catList" placeholder="예: 서류, 의류, 세면도구">
       <datalist id="catList">
-        <option value="ìë¥"><option value="ìë¥"><option value="ì¸ë©´ëêµ¬">
-        <option value="ì ìê¸°ê¸°"><option value="ìì½í"><option value="ì¬íì©í"><option value="ê¸°í">
+        <option value="서류"><option value="의류"><option value="세면도구">
+        <option value="전자기기"><option value="의약품"><option value="여행용품"><option value="기타">
       </datalist>
     </div>
-    <div class="form-group"><label>í­ëª©ëª</label><input type="text" id="cItem" placeholder="ì: ì¬ê¶, ì¶©ì ê¸°"></div>
+    <div class="form-group"><label>항목명</label><input type="text" id="cItem" placeholder="예: 여권, 충전기"></div>
     <div class="modal-actions">
-      <button class="btn btn-outline" onclick="closeModal('modal-check')">ì·¨ì</button>
-      <button class="btn btn-primary" onclick="saveCheck()">ì ì¥</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-check')">취소</button>
+      <button class="btn btn-primary" onclick="saveCheck()">저장</button>
     </div>
   </div>
 </div>
@@ -557,14 +557,14 @@ textarea{resize:vertical;min-height:70px;}
 <div class="modal-overlay" id="modal-place">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title" id="placeModalTitle">ð ì¥ì ì¶ê°</div>
+    <div class="modal-title" id="placeModalTitle">📍 장소 추가</div>
     <input type="hidden" id="pType">
-    <div class="form-group"><label>ì´ë¦</label><input type="text" id="pName" placeholder="ì: ì´ì¹ë ë¼ë© ì ì£¼ì¿ ì "></div>
-    <div class="form-group"><label>ì£¼ì (ì í)</label><input type="text" id="pAddress" placeholder="ì£¼ì ìë ¥"></div>
-    <div class="form-group"><label>ë©ëª¨ / í</label><textarea id="pNote" placeholder="ìììê°, ì¶ì² ë©ë´, ìì½ ì¬ë¶ ë±"></textarea></div>
+    <div class="form-group"><label>이름</label><input type="text" id="pName" placeholder="예: 이치란 라멘 신주쿠점"></div>
+    <div class="form-group"><label>주소 (선택)</label><input type="text" id="pAddress" placeholder="주소 입력"></div>
+    <div class="form-group"><label>메모 / 팁</label><textarea id="pNote" placeholder="영업시간, 추천 메뉴, 예약 여부 등"></textarea></div>
     <div class="modal-actions">
-      <button class="btn btn-outline" onclick="closeModal('modal-place')">ì·¨ì</button>
-      <button class="btn btn-primary" onclick="savePlace()">ì ì¥</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-place')">취소</button>
+      <button class="btn btn-primary" onclick="savePlace()">저장</button>
     </div>
   </div>
 </div>
@@ -572,9 +572,9 @@ textarea{resize:vertical;min-height:70px;}
 <div class="toast" id="toast"></div>
 
 <script>
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 // FIREBASE GLOBALS
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 const HARDCODED_FB_CONFIG = {
   apiKey: "AIzaSyCM2JnTnKU3Kmg--2AUV7wCvDJYFcewkNY",
   authDomain: "raandna-7b775.firebaseapp.com",
@@ -594,9 +594,9 @@ const FB_KEY = 'tp_fb_cfg_v1';
 const ROOM_KEY = 'tp_room_v1';
 const LOCAL_KEY = 'tp_state_v1';
 
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 // STATE
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 let state = {
   trip: { name:'', destination:'', start:'', end:'', memo:'', m1:'', m2:'' },
   itinerary: [],
@@ -610,21 +610,21 @@ let state = {
 const MY_NAME_KEY = 'tp_my_name_v1';
 
 const DEFAULT_CHECKLIST = [
-  {cat:'ìë¥',item:'ì¬ê¶'},{cat:'ìë¥',item:'ë¹íê¸° í°ì¼'},
-  {cat:'ìë¥',item:'ìì ìì½ íì¸ì'},{cat:'ìë¥',item:'ì¬íì ë³´í'},
-  {cat:'ìë¥',item:'ìì· (ì¼ìë§í¼)'},{cat:'ìë¥',item:'ìë§'},
-  {cat:'ìë¥',item:'ê²ì·/ì¬í·'},{cat:'ìë¥',item:'í¸í ì ë°'},
-  {cat:'ì¸ë©´ëêµ¬',item:'ì¹«ì/ì¹ì½'},{cat:'ì¸ë©´ëêµ¬',item:'ì´í¸/ë°ëìì'},
-  {cat:'ì¸ë©´ëêµ¬',item:'ì¤í¨ì¼ì´'},{cat:'ì¸ë©´ëêµ¬',item:'ë©´ëê¸°'},
-  {cat:'ì ìê¸°ê¸°',item:'ì¤ë§í¸í° ì¶©ì ê¸°'},{cat:'ì ìê¸°ê¸°',item:'ë³´ì¡°ë°°í°ë¦¬'},
-  {cat:'ì ìê¸°ê¸°',item:'ì´ì´í°'},{cat:'ì ìê¸°ê¸°',item:'ì¹´ë©ë¼'},
-  {cat:'ìì½í',item:'ëíµì½'},{cat:'ìì½í',item:'ìíì '},
-  {cat:'ìì½í',item:'ë°´ë'},{cat:'ì¬íì©í',item:'ì¬íì© íì°ì¹'},
+  {cat:'서류',item:'여권'},{cat:'서류',item:'비행기 티켓'},
+  {cat:'서류',item:'숙소 예약 확인서'},{cat:'서류',item:'여행자 보험'},
+  {cat:'의류',item:'속옷 (일수만큼)'},{cat:'의류',item:'양말'},
+  {cat:'의류',item:'겉옷/재킷'},{cat:'의류',item:'편한 신발'},
+  {cat:'세면도구',item:'칫솔/치약'},{cat:'세면도구',item:'샴푸/바디워시'},
+  {cat:'세면도구',item:'스킨케어'},{cat:'세면도구',item:'면도기'},
+  {cat:'전자기기',item:'스마트폰 충전기'},{cat:'전자기기',item:'보조배터리'},
+  {cat:'전자기기',item:'이어폰'},{cat:'전자기기',item:'카메라'},
+  {cat:'의약품',item:'두통약'},{cat:'의약품',item:'소화제'},
+  {cat:'의약품',item:'밴드'},{cat:'여행용품',item:'여행용 파우치'},
 ];
 
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 // FIREBASE FUNCTIONS
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 function setSyncStatus(status) { // 'syncing' | 'ok' | 'error' | 'offline'
   const dot = document.getElementById('syncDot');
   dot.className = 'sync-dot';
@@ -659,7 +659,7 @@ function doCreate() {
 function doJoin() {
   const code = document.getElementById('joinRoomCode').value.trim().toUpperCase();
   const errEl = document.getElementById('errorJoin');
-  if (!code) { errEl.textContent = 'â ï¸ ì¬íë°© ì½ëë¥¼ ìë ¥í´ì£¼ì¸ì.'; errEl.style.display='block'; return; }
+  if (!code) { errEl.textContent = '⚠️ 여행방 코드를 입력해주세요.'; errEl.style.display='block'; return; }
   errEl.style.display = 'none';
   const cfg = HARDCODED_FB_CONFIG;
   try {
@@ -690,7 +690,7 @@ function connectFirebase(cfg, roomId) {
         }
       }
       setSyncStatus('ok');
-    }, (err) => { setSyncStatus('error'); showToast('ëê¸°í ì¤ë¥: ' + err.message); });
+    }, (err) => { setSyncStatus('error'); showToast('동기화 오류: ' + err.message); });
 
     hideSetup();
     _isInitialized = true;
@@ -698,11 +698,11 @@ function connectFirebase(cfg, roomId) {
       state.checklist = DEFAULT_CHECKLIST.map((c,i) => ({id:'c'+i, category:c.cat, item:c.item, checked:false}));
     }
     renderAll();
-    showToast('ð ì¬íë°© ì°ê²°ë¨: ' + roomId);
+    showToast('🔗 여행방 연결됨: ' + roomId);
   } catch(e) {
-    document.getElementById('errorCreate').textContent = 'â ï¸ Firebase ì°ê²° ì¤í¨: ' + e.message;
+    document.getElementById('errorCreate').textContent = '⚠️ Firebase 연결 실패: ' + e.message;
     document.getElementById('errorCreate').style.display = 'block';
-    document.getElementById('errorJoin').textContent = 'â ï¸ Firebase ì°ê²° ì¤í¨: ' + e.message;
+    document.getElementById('errorJoin').textContent = '⚠️ Firebase 연결 실패: ' + e.message;
     document.getElementById('errorJoin').style.display = 'block';
     setSyncStatus('error');
   }
@@ -716,7 +716,7 @@ function pushToFirebase() {
     _isRemote = true;
     _db.ref('trips/' + _roomId).set(state)
       .then(() => { setSyncStatus('ok'); })
-      .catch(() => { setSyncStatus('error'); showToast('ëê¸°í ì¤í¨ â ì¸í°ë·ì íì¸í´ì£¼ì¸ì'); })
+      .catch(() => { setSyncStatus('error'); showToast('동기화 실패 — 인터넷을 확인해주세요'); })
       .finally(() => { _isRemote = false; });
   }, 600);
 }
@@ -735,7 +735,7 @@ function hideSetup() {
 }
 
 function resetSetup() {
-  if (!confirm('ë¤ë¥¸ ì¬íë°©ì¼ë¡ ì´ëíìê² ì´ì? íì¬ ê¸°ê¸°ì ì ì¥ ë°ì´í°ë ì ì§ë©ëë¤.')) return;
+  if (!confirm('다른 여행방으로 이동하시겠어요? 현재 기기의 저장 데이터는 유지됩니다.')) return;
   try { localStorage.removeItem(FB_KEY); localStorage.removeItem(ROOM_KEY); } catch(e) {}
   location.reload();
 }
@@ -743,13 +743,13 @@ function resetSetup() {
 function copyRoomCode() {
   const code = _roomId || '';
   if (!code) return;
-  const msg = `âï¸ ì¬í íëë ì´ë!\në°© ì½ë: ${code}\n\n1. ì¬í íëë HTML íì¼ì ì´ì´ì\n2. "ê¸°ì¡´ ë°© ì°¸ì¬"ë¥¼ ì ííê³ \n3. ì ì½ëë¥¼ ìë ¥íë©´ ê°ì´ ë³¼ ì ìì´ì!`;
+  const msg = `✈️ 여행 플래너 초대!\n방 코드: ${code}\n\n1. 여행 플래너 HTML 파일을 열어요\n2. "기존 방 참여"를 선택하고\n3. 위 코드를 입력하면 같이 볼 수 있어요!`;
   if (navigator.clipboard) {
-    navigator.clipboard.writeText(msg).then(() => showToast('ì´ë ë©ìì§ê° ë³µì¬ëì´ì! ì¹´ì¹´ì¤í¡ì¼ë¡ ë³´ë´ì¸ì ð¬'));
+    navigator.clipboard.writeText(msg).then(() => showToast('초대 메시지가 복사됐어요! 카카오톡으로 보내세요 💬'));
   } else {
     const ta = document.createElement('textarea');
     ta.value = msg; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
-    showToast('ì´ë ë©ìì§ê° ë³µì¬ëì´ì! ì¹´ì¹´ì¤í¡ì¼ë¡ ë³´ë´ì¸ì ð¬');
+    showToast('초대 메시지가 복사됐어요! 카카오톡으로 보내세요 💬');
   }
 }
 
@@ -761,9 +761,9 @@ function switchSetupTab(tab) {
   document.getElementById('panelJoin').classList.toggle('active', tab==='join');
 }
 
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 // INIT
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 function init() {
   // Load local state first for fast render
   try {
@@ -783,7 +783,7 @@ function init() {
   } catch(e) {}
 
   if (roomId) {
-    // ì ì¥ë ë°© ì½ëê° ìì¼ë©´ ë°ë¡ ì°ê²°
+    // 저장된 방 코드가 있으면 바로 연결
     connectFirebase(HARDCODED_FB_CONFIG, roomId);
   } else {
     document.getElementById('setupOverlay').style.display = 'block';
@@ -792,9 +792,9 @@ function init() {
   renderAll();
 }
 
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 // RENDER ALL
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 function renderAll() {
   renderHeader();
   renderTrip();
@@ -808,19 +808,19 @@ function renderAll() {
   updateMyNameOptions();
 }
 
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 // HEADER & TRIP
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 function renderHeader() {
   const t = state.trip;
-  document.getElementById('headerTitle').textContent = t.name || 'âï¸ ì°ë¦¬ì ì¬í';
+  document.getElementById('headerTitle').textContent = t.name || '✈️ 우리의 여행';
   let meta = '';
   if (t.destination) meta += t.destination;
-  if (t.start && t.end) meta += (meta?' Â· ':'') + fmtDate(t.start)+' ~ '+fmtDate(t.end)+' ('+calcDays(t.start,t.end)+'ë°)';
-  if (t.m1||t.m2) meta += (meta?' Â· ':'')+[t.m1,t.m2].filter(Boolean).join(' & ');
-  document.getElementById('headerMeta').textContent = meta || (_roomId ? 'ì¬íë°©: '+_roomId : 'ì¬í ì ë³´ë¥¼ ìë ¥íì¸ì');
-  document.getElementById('heroTitle').textContent = t.destination || 'ì´ëë¡ ë ëë³¼ê¹ì?';
-  document.getElementById('heroSub').textContent = t.name || 'ì¬í ê¸°ë³¸ ì ë³´ë¥¼ ìë ¥íë©´ ììë©ëë¤';
+  if (t.start && t.end) meta += (meta?' · ':'') + fmtDate(t.start)+' ~ '+fmtDate(t.end)+' ('+calcDays(t.start,t.end)+'박)';
+  if (t.m1||t.m2) meta += (meta?' · ':'')+[t.m1,t.m2].filter(Boolean).join(' & ');
+  document.getElementById('headerMeta').textContent = meta || (_roomId ? '여행방: '+_roomId : '여행 정보를 입력하세요');
+  document.getElementById('heroTitle').textContent = t.destination || '어디로 떠나볼까요?';
+  document.getElementById('heroSub').textContent = t.name || '여행 기본 정보를 입력하면 시작됩니다';
   if (_roomId) document.getElementById('roomCodeDisplay').textContent = _roomId;
 }
 
@@ -849,16 +849,16 @@ function updateTrip() {
 function updatePayerOptions() {
   const p1 = document.getElementById('payerOpt1');
   const p2 = document.getElementById('payerOpt2');
-  p1.value = state.trip.m1||'ì¬íì1'; p1.textContent = state.trip.m1||'ì¬íì1';
-  p2.value = state.trip.m2||'ì¬íì2'; p2.textContent = state.trip.m2||'ì¬íì2';
+  p1.value = state.trip.m1||'여행자1'; p1.textContent = state.trip.m1||'여행자1';
+  p2.value = state.trip.m2||'여행자2'; p2.textContent = state.trip.m2||'여행자2';
 }
 
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 // ITINERARY
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 function renderItinerary() {
   const el = document.getElementById('itineraryContent');
-  if (!state.itinerary.length) { el.innerHTML=`<div class="empty"><div class="empty-icon">ð</div><p>ìì§ ì¼ì ì´ ìì´ì.<br>ì¼ì ì ì¶ê°í´ ë³´ì¸ì!</p></div>`; return; }
+  if (!state.itinerary.length) { el.innerHTML=`<div class="empty"><div class="empty-icon">📅</div><p>아직 일정이 없어요.<br>일정을 추가해 보세요!</p></div>`; return; }
   const grouped = {};
   state.itinerary.forEach(i => { if (!grouped[i.date]) grouped[i.date]=[]; grouped[i.date].push(i); });
   let day = 1;
@@ -872,7 +872,7 @@ function renderItinerary() {
           <div class="itinerary-activity">${it.category} ${esc(it.activity)}</div>
           ${it.note?`<div class="itinerary-note">${esc(it.note)}</div>`:''}
         </div>
-        <div class="item-actions"><button class="btn-icon" onclick="deleteItem('itinerary','${it.id}')">ðï¸</button></div>
+        <div class="item-actions"><button class="btn-icon" onclick="deleteItem('itinerary','${it.id}')">🗑️</button></div>
       </div>`).join('')}
     </div>`;
   }).join('');
@@ -887,15 +887,15 @@ function openAddItinerary() {
 function saveItinerary() {
   const activity = document.getElementById('iActivity').value.trim();
   const date = document.getElementById('iDate').value;
-  if (!activity) { showToast('íëëªì ìë ¥í´ì£¼ì¸ì'); return; }
-  if (!date) { showToast('ë ì§ë¥¼ ì íí´ì£¼ì¸ì'); return; }
+  if (!activity) { showToast('활동명을 입력해주세요'); return; }
+  if (!date) { showToast('날짜를 선택해주세요'); return; }
   state.itinerary.push({ id:uid(), date, time:document.getElementById('iTime').value, category:document.getElementById('iCategory').value, activity, note:document.getElementById('iNote').value });
-  closeModal('modal-itinerary'); renderItinerary(); saveState(); showToast('ì¼ì ì´ ì¶ê°ëì´ì!â');
+  closeModal('modal-itinerary'); renderItinerary(); saveState(); showToast('일정이 추가됐어요 ✅');
 }
 
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 // BUDGET
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 function updateBudget() {
   state.budget.preBudget = parseInt(document.getElementById('preBudget').value)||0;
   state.budget.duringBudget = parseInt(document.getElementById('duringBudget').value)||0;
@@ -918,24 +918,24 @@ function renderBudget() {
 
   document.getElementById('budgetSummaryBlock').innerHTML = totalBudget>0?`
     <div class="budget-summary">
-      <div class="budget-row"><span style="color:var(--gray-600)">ì ì²´ ìì°</span><span class="budget-total">${fmtMoney(totalBudget)}</span></div>
-      <div class="budget-row" style="font-size:13px"><span style="color:#6d28d9">ðï¸ ì¬ì </span><span style="color:#6d28d9;font-weight:700">${fmtMoney(preBudget)}</span></div>
-      <div class="budget-row" style="font-size:13px"><span style="color:var(--primary)">âï¸ ì¬í ì¤</span><span style="color:var(--primary);font-weight:700">${fmtMoney(duringBudget)}</span></div>
+      <div class="budget-row"><span style="color:var(--gray-600)">전체 예산</span><span class="budget-total">${fmtMoney(totalBudget)}</span></div>
+      <div class="budget-row" style="font-size:13px"><span style="color:#6d28d9">🗓️ 사전</span><span style="color:#6d28d9;font-weight:700">${fmtMoney(preBudget)}</span></div>
+      <div class="budget-row" style="font-size:13px"><span style="color:var(--primary)">✈️ 여행 중</span><span style="color:var(--primary);font-weight:700">${fmtMoney(duringBudget)}</span></div>
       <hr style="border:none;border-top:1px solid var(--gray-200);margin:8px 0">
-      <div class="budget-row"><span style="color:var(--gray-600)">ì´ ì§ì¶</span><span style="font-weight:700">${fmtMoney(totalSpent)}</span></div>
-      <div class="budget-row"><span style="color:var(--gray-600)">ë¨ì ìì°</span><span class="budget-remaining ${sc}">${rem>=0?fmtMoney(rem):'ì´ê³¼ '+fmtMoney(-rem)}</span></div>
+      <div class="budget-row"><span style="color:var(--gray-600)">총 지출</span><span style="font-weight:700">${fmtMoney(totalSpent)}</span></div>
+      <div class="budget-row"><span style="color:var(--gray-600)">남은 예산</span><span class="budget-remaining ${sc}">${rem>=0?fmtMoney(rem):'초과 '+fmtMoney(-rem)}</span></div>
       <div class="progress-bar"><div class="progress-fill ${fc}" style="width:${pct}%"></div></div>
-      <div style="text-align:right;font-size:11px;color:var(--gray-400);margin-top:4px">${pct}% ì¬ì©</div>
+      <div style="text-align:right;font-size:11px;color:var(--gray-400);margin-top:4px">${pct}% 사용</div>
     </div>` : '';
 
   document.getElementById('phaseHeaderPre').style.display='block';
-  document.getElementById('preSpentBadge').textContent = preExp.length?fmtMoney(preSpent)+' ì¬ì©':'';
+  document.getElementById('preSpentBadge').textContent = preExp.length?fmtMoney(preSpent)+' 사용':'';
   document.getElementById('expenseListPre').innerHTML = preExp.length?renderExpenseItems(preExp)
-    :`<div class="empty" style="padding:16px"><div class="empty-icon" style="font-size:28px">ðï¸</div><p style="font-size:13px">í­ê³µê¶, ìì ìì½ê¸ ë±<br>ì¬í ì  ì§ì¶ì ê¸°ë¡íì¸ì</p></div>`;
+    :`<div class="empty" style="padding:16px"><div class="empty-icon" style="font-size:28px">🗓️</div><p style="font-size:13px">항공권, 숙소 예약금 등<br>여행 전 지출을 기록하세요</p></div>`;
   document.getElementById('phaseHeaderDuring').style.display='block';
-  document.getElementById('duringSpentBadge').textContent = durExp.length?fmtMoney(durSpent)+' ì¬ì©':'';
+  document.getElementById('duringSpentBadge').textContent = durExp.length?fmtMoney(durSpent)+' 사용':'';
   document.getElementById('expenseListDuring').innerHTML = durExp.length?renderExpenseItems(durExp)
-    :`<div class="empty" style="padding:16px"><div class="empty-icon" style="font-size:28px">âï¸</div><p style="font-size:13px">ìë¹, êµíµë¹ ë±<br>ì¬í ì¤ ì§ì¶ì ê¸°ë¡íì¸ì</p></div>`;
+    :`<div class="empty" style="padding:16px"><div class="empty-icon" style="font-size:28px">✈️</div><p style="font-size:13px">식비, 교통비 등<br>여행 중 지출을 기록하세요</p></div>`;
 }
 
 function renderExpenseItems(list) {
@@ -944,11 +944,11 @@ function renderExpenseItems(list) {
       <div class="expense-icon">${e.category.split(' ')[0]}</div>
       <div class="expense-content">
         <div class="expense-desc">${esc(e.desc)}</div>
-        <div class="expense-meta">${e.date?fmtDate(e.date):''} Â· ${esc(e.category.split(' ').slice(1).join(' '))}${e.payer?' Â· '+esc(e.payer):''}</div>
+        <div class="expense-meta">${e.date?fmtDate(e.date):''} · ${esc(e.category.split(' ').slice(1).join(' '))}${e.payer?' · '+esc(e.payer):''}</div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
         <div class="expense-amount">${fmtMoney(e.amount)}</div>
-        <button class="btn-icon" onclick="deleteItem('expense','${e.id}')">ðï¸</button>
+        <button class="btn-icon" onclick="deleteItem('expense','${e.id}')">🗑️</button>
       </div>
     </div>`).join('');
 }
@@ -956,51 +956,51 @@ function renderExpenseItems(list) {
 function openAddExpense(phase) {
   updatePayerOptions();
   document.getElementById('ePhase').value = phase;
-  document.getElementById('expenseModalTitle').textContent = phase==='pre'?'ðï¸ ì¬ì  ì§ì¶ ì¶ê°':'âï¸ ì¬í ì¤ ì§ì¶ ì¶ê°';
+  document.getElementById('expenseModalTitle').textContent = phase==='pre'?'🗓️ 사전 지출 추가':'✈️ 여행 중 지출 추가';
   document.getElementById('eDate').value = phase==='pre'?today():(state.trip.start||today());
   document.getElementById('eAmount').value=''; document.getElementById('eDesc').value=''; document.getElementById('ePayer').value='';
-  document.getElementById('eCategory').value = phase==='pre'?'âï¸ êµíµ':'ð½ï¸ ìë¹';
+  document.getElementById('eCategory').value = phase==='pre'?'✈️ 교통':'🍽️ 식비';
   openModal('modal-expense');
 }
 
 function saveExpense() {
   const desc = document.getElementById('eDesc').value.trim();
   const amount = parseInt(document.getElementById('eAmount').value)||0;
-  if (!desc) { showToast('ë´ì©ì ìë ¥í´ì£¼ì¸ì'); return; }
-  if (!amount) { showToast('ê¸ì¡ì ìë ¥í´ì£¼ì¸ì'); return; }
+  if (!desc) { showToast('내용을 입력해주세요'); return; }
+  if (!amount) { showToast('금액을 입력해주세요'); return; }
   state.budget.expenses.push({ id:uid(), phase:document.getElementById('ePhase').value||'during', date:document.getElementById('eDate').value, category:document.getElementById('eCategory').value, desc, amount, payer:document.getElementById('ePayer').value });
   closeModal('modal-expense'); renderBudget(); saveState();
-  showToast(document.getElementById('ePhase').value==='pre'?'ì¬ì  ì§ì¶ ê¸°ë¡ëì´ì ðï¸':'ì¬í ì¤ ì§ì¶ ê¸°ë¡ëì´ì âï¸');
+  showToast(document.getElementById('ePhase').value==='pre'?'사전 지출 기록됐어요 🗓️':'여행 중 지출 기록됐어요 ✈️');
 }
 
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 // BOOKING
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 function renderBooking() {
   const el = document.getElementById('bookingList');
-  if (!state.bookings.length) { el.innerHTML=`<div class="empty"><div class="empty-icon">ð¨</div><p>ìì/êµíµ ì ë³´ë¥¼ ì¶ê°í´ë³´ì¸ì!</p></div>`; return; }
+  if (!state.bookings.length) { el.innerHTML=`<div class="empty"><div class="empty-icon">🏨</div><p>숙소/교통 정보를 추가해보세요!</p></div>`; return; }
   const acc = state.bookings.filter(b=>b.type==='accommodation');
   const trans = state.bookings.filter(b=>b.type==='transport');
   let html = '';
-  if (acc.length) { html+=`<div class="check-category">ð¨ ìì</div>`; html+=acc.map(b=>bookingCard(b)).join(''); }
-  if (trans.length) { html+=`<div class="check-category">âï¸ êµíµ</div>`; html+=trans.map(b=>bookingCard(b)).join(''); }
+  if (acc.length) { html+=`<div class="check-category">🏨 숙소</div>`; html+=acc.map(b=>bookingCard(b)).join(''); }
+  if (trans.length) { html+=`<div class="check-category">✈️ 교통</div>`; html+=trans.map(b=>bookingCard(b)).join(''); }
   el.innerHTML = html;
 }
 
 function bookingCard(b) {
-  const icon = b.type==='accommodation'?'ð¨':'âï¸';
+  const icon = b.type==='accommodation'?'🏨':'✈️';
   return `<div class="booking-item">
-    <div class="booking-name">${icon} ${esc(b.name)} <button class="btn-icon" onclick="deleteItem('booking','${b.id}')">ðï¸</button></div>
-    ${b.from?`<div class="booking-detail"><span>ìì</span><strong>${fmtDateTime(b.from)}</strong></div>`:''}
-    ${b.to?`<div class="booking-detail"><span>ì¢ë£</span><strong>${fmtDateTime(b.to)}</strong></div>`:''}
-    ${b.code?`<div class="booking-detail"><span>ìì½ë²í¸</span><span class="booking-code">${esc(b.code)}</span></div>`:''}
-    ${b.note?`<div class="booking-detail" style="flex-direction:column"><span>ë©ëª¨</span><span>${esc(b.note)}</span></div>`:''}
+    <div class="booking-name">${icon} ${esc(b.name)} <button class="btn-icon" onclick="deleteItem('booking','${b.id}')">🗑️</button></div>
+    ${b.from?`<div class="booking-detail"><span>시작</span><strong>${fmtDateTime(b.from)}</strong></div>`:''}
+    ${b.to?`<div class="booking-detail"><span>종료</span><strong>${fmtDateTime(b.to)}</strong></div>`:''}
+    ${b.code?`<div class="booking-detail"><span>예약번호</span><span class="booking-code">${esc(b.code)}</span></div>`:''}
+    ${b.note?`<div class="booking-detail" style="flex-direction:column"><span>메모</span><span>${esc(b.note)}</span></div>`:''}
   </div>`;
 }
 
 function openAddBooking(type) {
   document.getElementById('bookingType').value=type;
-  document.getElementById('bookingModalTitle').textContent=type==='accommodation'?'ð¨ ìì ì¶ê°':'âï¸ êµíµ ì¶ê°';
+  document.getElementById('bookingModalTitle').textContent=type==='accommodation'?'🏨 숙소 추가':'✈️ 교통 추가';
   ['bName','bCode','bNote'].forEach(id=>document.getElementById(id).value='');
   ['bFrom','bTo'].forEach(id=>document.getElementById(id).value='');
   openModal('modal-booking');
@@ -1008,26 +1008,26 @@ function openAddBooking(type) {
 
 function saveBooking() {
   const name=document.getElementById('bName').value.trim();
-  if (!name){showToast('ì´ë¦ì ìë ¥í´ì£¼ì¸ì');return;}
+  if (!name){showToast('이름을 입력해주세요');return;}
   state.bookings.push({id:uid(),type:document.getElementById('bookingType').value,name,from:document.getElementById('bFrom').value,to:document.getElementById('bTo').value,code:document.getElementById('bCode').value,note:document.getElementById('bNote').value});
-  closeModal('modal-booking');renderBooking();saveState();showToast('ìì½ ì ë³´ ì¶ê°ëì´ì â');
+  closeModal('modal-booking');renderBooking();saveState();showToast('예약 정보 추가됐어요 ✅');
 }
 
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 // CHECKLIST
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 function renderChecklist() {
   const all = state.checklist, done=all.filter(c=>c.checked).length;
-  document.getElementById('checkProgress').innerHTML=`<strong>${done}</strong> / ${all.length} ìë£ ${done===all.length&&all.length>0?'ð ì¤ë¹ ìë£!':''}`;
+  document.getElementById('checkProgress').innerHTML=`<strong>${done}</strong> / ${all.length} 완료 ${done===all.length&&all.length>0?'🎉 준비 완료!':''}`;
   const grouped={};
   all.forEach(c=>{if(!grouped[c.category])grouped[c.category]=[];grouped[c.category].push(c);});
   document.getElementById('checklistContent').innerHTML=Object.keys(grouped).map(cat=>`
     <div class="check-category">${esc(cat)}</div>
     ${grouped[cat].map(c=>`<div class="check-item ${c.checked?'checked':''}" onclick="toggleCheck('${c.id}')">
-      <div class="checkbox"><span class="checkbox-tick">â</span></div>
+      <div class="checkbox"><span class="checkbox-tick">✓</span></div>
       <span class="check-label">${esc(c.item)}</span>
-      <button class="btn-icon" onclick="event.stopPropagation();deleteItem('checklist','${c.id}')">ðï¸</button>
-    </div>`).join('')}`).join('') || `<div class="empty"><div class="empty-icon">â</div><p>ì²´í¬ë¦¬ì¤í¸ê° ìì´ì.</p></div>`;
+      <button class="btn-icon" onclick="event.stopPropagation();deleteItem('checklist','${c.id}')">🗑️</button>
+    </div>`).join('')}`).join('') || `<div class="empty"><div class="empty-icon">✅</div><p>체크리스트가 없어요.</p></div>`;
 }
 
 function toggleCheck(id) {
@@ -1038,20 +1038,20 @@ function toggleCheck(id) {
 function openAddCheck(){document.getElementById('cCategory').value='';document.getElementById('cItem').value='';openModal('modal-check');}
 function saveCheck(){
   const category=document.getElementById('cCategory').value.trim(),item=document.getElementById('cItem').value.trim();
-  if(!category||!item){showToast('ì¹´íê³ ë¦¬ì í­ëª©ì ëª¨ë ìë ¥í´ì£¼ì¸ì');return;}
+  if(!category||!item){showToast('카테고리와 항목을 모두 입력해주세요');return;}
   state.checklist.push({id:uid(),category,item,checked:false});
-  closeModal('modal-check');renderChecklist();saveState();showToast('í­ëª© ì¶ê°ëì´ì â');
+  closeModal('modal-check');renderChecklist();saveState();showToast('항목 추가됐어요 ✅');
 }
 
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 // PLACES
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
-const PLACE_CFG = {restaurant:{emoji:'ð½ï¸',label:'ìë¹'},attraction:{emoji:'ðºï¸',label:'ê´ê´ì§'},tip:{emoji:'ð¡',label:'í/ì ë³´'},shop:{emoji:'ðï¸',label:'ì¼í'}};
+// ─────────────────────────────────────────────────
+const PLACE_CFG = {restaurant:{emoji:'🍽️',label:'식당'},attraction:{emoji:'🗺️',label:'관광지'},tip:{emoji:'💡',label:'팁/정보'},shop:{emoji:'🛍️',label:'쇼핑'}};
 
 function renderPlaces() {
   const el = document.getElementById('placeList');
   const nonTips = state.places.filter(p=>p.type!=='tip');
-  if (!nonTips.length) { el.innerHTML=`<div class="empty"><div class="empty-icon">ð</div><p>ê°ê³  ì¶ì ìë¹, ê´ê´ì§ë¥¼<br>ì ì¥í´ëì¸ì!</p></div>`; return; }
+  if (!nonTips.length) { el.innerHTML=`<div class="empty"><div class="empty-icon">📍</div><p>가고 싶은 식당, 관광지를<br>저장해두세요!</p></div>`; return; }
   let html='';
   ['restaurant','attraction','shop'].forEach(type=>{
     const items=nonTips.filter(p=>p.type===type); if(!items.length)return;
@@ -1060,11 +1060,11 @@ function renderPlaces() {
     html+=items.map(p=>`<div class="place-item">
       <div class="place-emoji">${cfg.emoji}</div>
       <div class="place-content">
-        <div class="place-name">${esc(p.name)}<span class="star" onclick="toggleStar('${p.id}')">${p.starred?'â­':'â'}</span></div>
-        ${p.address?`<div class="place-address">ð ${esc(p.address)}</div>`:''}
+        <div class="place-name">${esc(p.name)}<span class="star" onclick="toggleStar('${p.id}')">${p.starred?'⭐':'☆'}</span></div>
+        ${p.address?`<div class="place-address">📍 ${esc(p.address)}</div>`:''}
         ${p.note?`<div class="place-note">${esc(p.note)}</div>`:''}
       </div>
-      <button class="btn-icon" onclick="deleteItem('place','${p.id}')">ðï¸</button>
+      <button class="btn-icon" onclick="deleteItem('place','${p.id}')">🗑️</button>
     </div>`).join('');
   });
   el.innerHTML = html;
@@ -1074,14 +1074,14 @@ function renderTips() {
   const el = document.getElementById('tipList');
   const tips = (state.places||[]).filter(p=>p.type==='tip');
   if (!tips.length) {
-    el.innerHTML=`<div class="empty"><div class="empty-icon">ð¡</div><p>ì¬í ì¤ë¹íë©´ì ìê² ë<br>ì ì©í íì ì ì¥í´ëì¸ì!</p></div>`;
+    el.innerHTML=`<div class="empty"><div class="empty-icon">💡</div><p>여행 준비하면서 알게 된<br>유용한 팁을 저장해두세요!</p></div>`;
     return;
   }
   el.innerHTML = tips.map(p=>`
     <div class="tip-item">
-      <div class="tip-title">ð¡ ${esc(p.name)}<span class="star" onclick="toggleStar('${p.id}')" style="margin-left:auto">${p.starred?'â­':'â'}</span><button class="btn-icon" onclick="deleteItem('place','${p.id}')">ðï¸</button></div>
+      <div class="tip-title">💡 ${esc(p.name)}<span class="star" onclick="toggleStar('${p.id}')" style="margin-left:auto">${p.starred?'⭐':'☆'}</span><button class="btn-icon" onclick="deleteItem('place','${p.id}')">🗑️</button></div>
       ${p.note?`<div class="tip-body">${esc(p.note)}</div>`:''}
-      ${p.address?`<div class="tip-addr">ð ${esc(p.address)}</div>`:''}
+      ${p.address?`<div class="tip-addr">📍 ${esc(p.address)}</div>`:''}
     </div>`).join('');
 }
 
@@ -1089,22 +1089,22 @@ function toggleStar(id){const p=state.places.find(x=>x.id===id);if(p){p.starred=
 
 function openAddPlace(type){
   document.getElementById('pType').value=type;
-  document.getElementById('placeModalTitle').textContent=PLACE_CFG[type].emoji+' '+PLACE_CFG[type].label+' ì¶ê°';
+  document.getElementById('placeModalTitle').textContent=PLACE_CFG[type].emoji+' '+PLACE_CFG[type].label+' 추가';
   ['pName','pAddress','pNote'].forEach(id=>document.getElementById(id).value='');
   openModal('modal-place');
 }
 function savePlace(){
   const name=document.getElementById('pName').value.trim();
-  if(!name){showToast('ì´ë¦ì ìë ¥í´ì£¼ì¸ì');return;}
+  if(!name){showToast('이름을 입력해주세요');return;}
   state.places.push({id:uid(),type:document.getElementById('pType').value,name,address:document.getElementById('pAddress').value,note:document.getElementById('pNote').value,starred:false});
-  closeModal('modal-place');renderPlaces();saveState();showToast('ì¥ì ì ì¥ëì´ì ð');
+  closeModal('modal-place');renderPlaces();saveState();showToast('장소 저장됐어요 📍');
 }
 
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 // DELETE
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 function deleteItem(type,id){
-  if(!confirm('ì­ì íìê² ì´ì?'))return;
+  if(!confirm('삭제하시겠어요?'))return;
   if(type==='itinerary')state.itinerary=state.itinerary.filter(i=>i.id!==id);
   else if(type==='expense')state.budget.expenses=state.budget.expenses.filter(i=>i.id!==id);
   else if(type==='booking')state.bookings=state.bookings.filter(i=>i.id!==id);
@@ -1114,9 +1114,9 @@ function deleteItem(type,id){
   renderAll();saveState();
 }
 
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 // NOTES
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 function getMyName() {
   try { return localStorage.getItem(MY_NAME_KEY)||''; } catch(e) { return ''; }
 }
@@ -1127,10 +1127,10 @@ function saveMyName() {
 function updateMyNameOptions() {
   const sel = document.getElementById('myNameSelect');
   if (!sel) return;
-  const m1 = state.trip.m1||'ì¬íì1';
-  const m2 = state.trip.m2||'ì¬íì2';
+  const m1 = state.trip.m1||'여행자1';
+  const m2 = state.trip.m2||'여행자2';
   const cur = getMyName();
-  sel.innerHTML = `<option value="">-- ì í --</option>
+  sel.innerHTML = `<option value="">-- 선택 --</option>
     <option value="${esc(m1)}" ${cur===m1?'selected':''}>${esc(m1)}</option>
     <option value="${esc(m2)}" ${cur===m2?'selected':''}>${esc(m2)}</option>`;
 }
@@ -1140,9 +1140,9 @@ function renderNotes() {
   if (!el) return;
   const notes = (state.notes||[]);
   const myName = getMyName();
-  const m1 = state.trip.m1||'ì¬íì1';
+  const m1 = state.trip.m1||'여행자1';
   if (!notes.length) {
-    el.innerHTML<`<div class="empty"><div class="empty-icon">ð</div><p>ìë¡ ìê² ë ì ë³´ë¥¼<br>ì¬ê¸°ì ê³µì í´ë³´ì¸ì!</p></div>`;
+    el.innerHTML<`<div class="empty"><div class="empty-icon">📝</div><p>서로 알게 된 정보를<br>여기에 공유해보세요!</p></div>`;
     return;
   }
   el.innerHTML = [...notes].sort((a,b)=>(a.ts||'').localeCompare(b.ts||'')).map(n=>{
@@ -1153,7 +1153,7 @@ function renderNotes() {
         <span class="note-author ${cls}">${esc(n.author||'?')}</span>
         <div style="display:flex;align-items:center;gap:6px">
           <span class="note-time">${fmtNoteTime(n.ts)}</span>
-          <button class="btn-icon" style="font-size:13px" onclick="deleteItem('note','${n.id}')">ðï¸</button>
+          <button class="btn-icon" style="font-size:13px" onclick="deleteItem('note','${n.id}')">🗑️</button>
         </div>
       </div>
       <div class="note-text">${esc(n.text)}</div>
@@ -1166,8 +1166,8 @@ function renderNotes() {
 function saveNote() {
   const text = document.getElementById('noteInput').value.trim();
   const author = getMyName();
-  if (!text) { showToast('ë´ì©ì ìë ¥í´ì£¼ì¸ì'); return; }
-  if (!author) { showToast('ë¨¼ì  ë´ ì´ë¦ì ì íí´ì£¼ì¸ì!'); return; }
+  if (!text) { showToast('내용을 입력해주세요'); return; }
+  if (!author) { showToast('먼저 내 이름을 선택해주세요!'); return; }
   if (!state.notes) state.notes = [];
   state.notes.push({ id:uid(), author, text, ts: new Date().toISOString() });
   document.getElementById('noteInput').value = '';
@@ -1202,9 +1202,9 @@ function fmtNoteTime(ts) {
   } catch(e) { return ''; }
 }
 
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 // TABS / MODALS / UTILS
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 function switchTab(tab,el){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
@@ -1219,16 +1219,16 @@ document.querySelectorAll('.modal-overlay').forEach(el=>{el.addEventListener('cl
 function uid(){return Math.random().toString(36).slice(2,10);}
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function today(){return new Date().toISOString().slice(0,10);}
-function fmtMoney(n){return 'â©'+parseInt(n||0).toLocaleString('ko-KR');}
+function fmtMoney(n){return '₩'+parseInt(n||0).toLocaleString('ko-KR');}
 function fmtDate(d){if(!d)return'';const[y,m,day]=d.split('-');return`${parseInt(m)}/${parseInt(day)}`;}
-function fmtDateKR(d){if(!d)return'';const[y,m,day]=d.split('-');const days=['ì¼','ì','í','ì','ëª©','ê¸','í '];const wd=new Date(d).getDay();return`${y}ë ${parseInt(m)}ì ${parseInt(day)}ì¼ (${days[wd]})`;}
+function fmtDateKR(d){if(!d)return'';const[y,m,day]=d.split('-');const days=['일','월','화','수','목','금','토'];const wd=new Date(d).getDay();return`${y}년 ${parseInt(m)}월 ${parseInt(day)}일 (${days[wd]})`;}
 function fmtDateTime(dt){if(!dt)return'';const[date,time]=dt.split('T');const[y,m,d]=date.split('-');return`${parseInt(m)}.${parseInt(d)} ${time||''}`;}
 function calcDays(start,end){if(!start||!end)return 0;return Math.round((new Date(end)-new Date(start))/86400000);}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
 
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 // START
-// âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─────────────────────────────────────────────────
 init();
 </script>
 </body>
