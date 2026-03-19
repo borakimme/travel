@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>✈️ 우리의 여행 플래너</title>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<style>
+:root{--primary:#4f6ef7;--primary-dark:#3a56e0;--primary-light:#eef1ff;--accent:#ff7043;--success:#26c281;--warning:#f59e0b;--danger:#ef4444;--gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;--gray-300:#cbd5e1;--gray-400:#94a3b8;--gray-500:#64748b;--gray-600:#475569;--gray-700:#334155;--gray-800:#1e293b;--shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow:0 4px 16px rgba(0,0,0,.10);--radius:14px;--radius-sm:8px;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR',sans-serif;background:#f0f4ff;color:var(--gray-800);font-size:15px;line-height:1.5;}
+
+/* ── SETUP OVERLAY ── */
+.setup-overlay{position:fixed;inset:0;background:white;z-index:9999;overflow-y:auto;display:none;}
+.setup-inner{max-width:480px;margin:0 auto;padding:32px 20px 60px;}
+.setup-logo{text-align:center;margin-bottom:24px;}
+.setup-logo .emoji{font-size:52px;display:block;margin-bottom:8px;}
+.setup-logo h1{font-size:22px;font-weight:800;color:var(--gray-800);}
+.setup-logo p{font-size:14px;color:var(--gray-500);margin-top:4px;}
+.setup-card{background:var(--gray-50);border:1.5px solid var(--gray-200);border-radius:var(--radius);padding:18px;margin-bottom:14px;}
+.setup-card h3{font-size:15px;font-weight:800;margin-bottom:10px;color:var(--gray-800);}
+.setup-step{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start;}
+.step-num{width:24px;height:24px;background:var(--primary);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;margin-top:1px;}
+.step-text{font-size:13px;color:var(--gray-600);line-height:1.6;}
+.step-text a{color:var(--primary);font-weight:700;}
+.step-text code{background:var(--gray-200);padding:1px 5px;border-radius:4px;font-family:monospace;font-size:12px;}
+.setup-tab-row{display:flex;gap:6px;margin-bottom:14px;}
+.setup-tab{flex:1;padding:10px;border:2px solid var(--gray-200);border-radius:var(--radius-sm);text-align:center;cursor:pointer;font-size:13px;font-weight:700;color:var(--gray-500);background:white;transition:.15s;}
+.setup-tab.active{border-color:var(--primary);color:var(--primary);background:var(--primary-light);}
+.setup-panel{display:none;}
+.setup-panel.active{display:block;}
+.btn-setup{width:100%;padding:14px;background:linear-gradient(135deg,#4f6ef7,#7c3aed);color:white;border:none;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;margin-top:6px;transition:.15s;}
+.btn-setup:hover{opacity:.9;}
+.setup-error{background:#fef2f2;border:1.5px solid #fecaca;border-radius:var(--radius-sm);padding:10px 12px;font-size:13px;color:var(--danger);margin-top:8px;display:none;}
+
+/* ── APP SHELL ── */
+.app{max-width:520px;margin:0 auto;min-height:100vh;background:white;display:flex;flex-direction:column;}
+
+/* ── HEADER ── */
+.header{background:linear-gradient(135deg,#4f6ef7,#7c3aed);color:white;padding:18px 16px 12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(79,110,247,.3);}
+.header-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+.header-title{font-size:19px;font-weight:800;letter-spacing:-.3px;}
+.header-meta{font-size:12px;opacity:.82;margin-top:2px;}
+.header-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.sync-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;transition:.3s;}
+.sync-dot.green{background:#4ade80;box-shadow:0 0 6px #4ade80;}
+.sync-dot.yellow{background:#fbbf24;animation:pulse .8s infinite;}
+.sync-dot.red{background:#f87171;}
+.sync-dot.gray{background:rgba(255,255,255,.4);}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.btn-room{background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.5);color:white;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;}
+.btn-room:hover{background:rgba(255,255,255,.35);}
+
+/* ── TABS ── */
+.tab-bar{display:flex;background:white;border-top:1px solid var(--gray-200);position:sticky;bottom:0;z-index:100;box-shadow:0 -2px 12px rgba(0,0,0,.06);}
+.tab-item{flex:1;display:flex;flex-direction:column;align-items:center;padding:9px 4px 8px;cursor:pointer;color:var(--gray-400);transition:.15s;font-size:10px;gap:3px;border:none;background:none;}
+.tab-item.active{color:var(--primary);}
+.tab-icon{font-size:20px;line-height:1;}
+.tab-label{font-weight:600;letter-spacing:.2px;}
+
+/* ── CONTENT ── */
+.content{flex:1;overflow-y:auto;padding:16px;}
+.section{display:none;}
+.section.active{display:block;}
+
+/* ── CARDS ── */
+.card{background:white;border:1.5px solid var(--gray-200);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow-sm);}
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.card-title{font-weight:700;font-size:15px;color:var(--gray-800);}
+
+/* ── FORMS ── */
+label{display:block;font-size:12px;font-weight:700;color:var(--gray-500);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;}
+input,select,textarea{width:100%;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);padding:10px 12px;font-size:14px;font-family:inherit;color:var(--gray-800);background:white;outline:none;transition:.15s;}
+input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(79,110,247,.12);}
+textarea{resize:vertical;min-height:70px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.form-group{margin-bottom:12px;}
+.form-group:last-child{margin-bottom:0;}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;border:none;border-radius:20px;padding:9px 18px;font-size:13px;font-weight:700;cursor:pointer;transition:.15s;font-family:inherit;}
+.btn-primary{background:var(--primary);color:white;}
+.btn-primary:hover{background:var(--primary-dark);}
+.btn-outline{background:white;color:var(--primary);border:1.5px solid var(--primary);}
+.btn-outline:hover{background:var(--primary-light);}
+.btn-danger{background:#fef2f2;color:var(--danger);border:1.5px solid #fecaca;}
+.btn-sm{padding:6px 12px;font-size:12px;}
+.btn-add{background:var(--primary-light);color:var(--primary);border:1.5px dashed var(--primary);border-radius:var(--radius-sm);padding:10px;width:100%;font-size:13px;font-weight:700;cursor:pointer;transition:.15s;font-family:inherit;text-align:center;}
+.btn-add:hover{background:var(--primary);color:white;}
+.btn-icon{background:none;border:none;cursor:pointer;padding:4px;border-radius:6px;font-size:15px;color:var(--gray-400);transition:.15s;}
+.btn-icon:hover{background:var(--gray-200);color:var(--gray-700);}
+
+/* ── BADGES ── */
+.badge{display:inline-block;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:700;}
+.badge-blue{background:var(--primary-light);color:var(--primary);}
+.badge-green{background:#dcfce7;color:#15803d;}
+.badge-purple{background:#f5f3ff;color:#7c3aed;}
+.badge-gray{background:var(--gray-100);color:var(--gray-600);}
+
+/* ── TRIP HERO ── */
+.trip-hero{background:linear-gradient(135deg,#4f6ef7,#7c3aed);border-radius:var(--radius);padding:20px;color:white;margin-bottom:16px;text-align:center;}
+.trip-hero .emoje{font-size:40px;margin-bottom:8px;}
+.trip-hero h2{font-size:22px;font-weight:800;}
+.trip-hero p{font-size:13px;opacity:.8;margin-top:4px;}
+
+/* ── ITINERARY ── */
+.day-block{margin-bottom:16px;}
+.day-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.day-dot{width:32px;height:32px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:12px;flex-shrink:0;}
+.day-label{font-weight:700;font-size:14px;}
+.itinerary-item{display:flex;gap:10px;padding:10px 12px;background:var(--gray-50);border-radius:var(--radius-sm);margin-bottom:6px;border:1.5px solid var(--gray-200);align-items:flex-start;}
+.itinerary-time{font-size:12px;font-weight:700;color:var(--primary);min-width:40px;margin-top:2px;}
+.itinerary-content{flex:1;}
+.itinerary-activity{font-weight:600;font-size:14px;}
+.itinerary-note{font-size:12px;color:var(--gray-500);margin-top:2px;}
+.item-actions{display:flex;gap:4px;flex-shrink:0;}
+
+/* ── BUDGET ── */
+.budget-summary{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1.5px solid #86efac;border-radius:var(--radius);padding:16px;margin-bottom:16px;}
+.budget-row{display:flex;justify-content:space-between;align-items:center;font-size:14px;margin-bottom:4px;}
+.budget-row:last-child{margin-bottom:0;}
+.budget-total{font-size:20px;font-weight:800;color:var(--gray-800);}
+.budget-remaining.ok{color:#15803d;font-weight:700;font-size:16px;}
+.budget-remaining.warn{color:var(--warning);font-weight:700;font-size:16px;}
+.budget-remaining.over{color:var(--danger);font-weight:700;font-size:16px;}
+.progress-bar{height:8px;background:var(--gray-200);border-radius:4px;overflow:hidden;margin-top:10px;}
+.progress-fill{height:100%;border-radius:4px;transition:.3s;background:var(--success);}
+.progress-fill.warn{background:var(--warning);}
+.progress-fill.over{background:var(--danger);}
+.expense-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--gray-50);border-radius:var(--radius-sm);margin-bottom:6px;border:1.5px solid var(--gray-200);}
+.expense-icon{font-size:22px;}
+.expense-content{flex:1;}
+.expense-desc{font-weight:600;font-size:14px;}
+.expense-meta{font-size:12px;color:var(--gray-400);}
+.expense-amount{font-weight:800;font-size:15px;color:var(--gray-800);}
+.phase-title-bar{font-weight:800;font-size:14px;padding:8px 12px;border-radius:var(--radius-sm);margin-bottom:8px;}
+.phase-title-bar.pre{background:#f5f3ff;color:#6d28d9;}
+.phase-title-bar.during{background:var(--primary-light);color:var(--primary);}
+
+/* ── BOOKING ── */
+.booking-item{padding:14px;background:var(--gray-50);border-radius:var(--radius-sm);margin-bottom:10px;border:1.5px solid var(--gray-200);}
+.booking-name{font-weight:700;font-size:15px;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.booking-detail{font-size:13px;color:var(--gray-500);margin-bottom:3px;display:flex;gap:8px;}
+.booking-detail strong{color:var(--gray-700);}
+.booking-code{font-family:monospace;background:var(--primary-light);color:var(--primary);padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;}
+
+/* ── CHECKLIST ── */
+.check-category{font-size:12px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.5px;margin:14px 0 8px;}
+.check-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--gray-50);border-radius:var(--radius-sm);margin-bottom:5px;border:1.5px solid var(--gray-200);cursor:pointer;transition:.15s;}
+.check-item.checked{background:#f0fdf4;border-color:#86efac;}
+.check-item.checked .check-label{text-decoration:line-through;color:var(--gray-400);}
+.checkbox{width:20px;height:20px;border:2px solid var(--gray-300);border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:.15s;}
+.check-item.checked .checkbox{background:var(--success);border-color:var(--success);}
+.checkbox-tick{color:white;font-size:13px;display:none;}
+.check-item.checked .checkbox-tick{display:block;}
+.check-label{font-size:14px;font-weight:500;flex:1;}
+.check-progress{text-align:center;font-size:13px;color:var(--gray-500);margin-bottom:12px;}
+.check-progress strong{color:var(--success);font-size:16px;}
+
+/* ── PLACES ── */
+.place-item{display:flex;gap:12px;padding:12px 14px;background:var(--gray-50);border-radius:var(--radius-sm);margin-bottom:8px;border:1.5px solid var(--gray-200);}
+.place-emoji{font-size:24px;flex-shrink:0;}
+.place-content{flex:1;}
+.place-name{font-weight:700;font-size:14px;margin-bottom:3px;display:flex;align-items:center;gap:6px;}
+.place-address{font-size:12px;color:var(--gray-400);margin-bottom:3px;}
+.place-note{font-size:13px;color:var(--gray-600);}
+.star{cursor:pointer;font-size:16px;}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:.2s;}
+.modal-overlay.open{opacity:1;pointer-events:auto;}
+.modal{background:white;border-radius:20px 20px 0 0;width:100%;max-width:520px;padding:20px 16px 32px;max-height:85vh;overflow-y:auto;transform:translateY(40px);transition:.2s;}
+.modal-overlay.open .modal{transform:translateY(0);}
+.modal-handle{width:36px;height:4px;background:var(--gray-200);border-radius:2px;margin:0 auto 16px;}
+.modal-title{font-size:17px;font-weight:800;margin-bottom:16px;color:var(--gray-800);}
+.modal-actions{display:flex;gap:8px;margin-top:16px;}
+.modal-actions .btn{flex:1;justify-content:center;}
+
+/* ── AMOUNT INPUT ── */
+.amount-wrapper{position:relative;}
+.amount-prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--gray-400);font-weight:700;font-size:15px;}
+.amount-input{padding-left:28px!important;}
+
+/* ── EMPTY ── */
+.empty{text-align:center;padding:32px 16px;color:var(--gray-400);}
+.empty-icon{font-size:40px;margin-bottom:8px;}
+.empty p{font-size:14px;}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--gray-800);color:white;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;opacity:0;transition:.25s;z-index:300;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ── ROOM CODE BOX ── */
+.room-code-box{background:var(--primary-light);border:2px solid var(--primary);border-radius:var(--radius);padding:16px;text-align:center;margin-bottom:14px;}
+.room-code-label{font-size:12px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.room-code-value{font-size:28px;font-weight:900;color:var(--primary);letter-spacing:4px;font-family:monospace;}
+
+@media(min-width:600px){
+  .modal{border-radius:var(--radius);max-width:480px;margin-bottom:40px;}
+  .modal-overlay{align-items:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ SETUP OVERLAY ═══════════════════ -->
+<div class="setup-overlay" id="setupOverlay">
+  <div class="setup-inner">
+    <div class="setup-logo">
+      <span class="emoji">✈️</span>
+      <h1>우리의 여행 플래너</h1>
+      <p>실시간 공유 여행 플래너 — 처음 한 번만 설정하세요</p>
+    </div>
+
+    <!-- 탭: 새로 만들기 / 참여하기 -->
+    <div class="setup-tab-row">
+      <button class="setup-tab active" onclick="switchSetupTab('create')" id="tabCreate">🌟 새 여행방 만들기</button>
+      <button class="setup-tab" onclick="switchSetupTab('join')" id="tabJoin">🔑 기존 방 참여</button>
+    </div>
+
+    <!-- 새 여행방 만들기 -->
+    <div class="setup-panel active" id="panelCreate">
+      <div class="setup-card" style="background:#eef1ff;border-color:#c7d2fe;margin-bottom:12px;">
+        <p style="font-size:13px;color:#4338ca;line-height:1.6;">✨ 여행방을 만들면 <strong>고유한 방 코드</strong>가 생성됩니다.<br>상대방에게 코드를 공유하면 실시간으로 함께 수정할 수 있어요!</p>
+      </div>
+      <div id="errorCreate" class="setup-error"></div>
+      <button class="btn-setup" onclick="doCreate()">✈️ 여행방 만들기</button>
+    </div>
+
+    <!-- 기존 방 참여 -->
+    <div class="setup-panel" id="panelJoin">
+      <div class="form-group">
+        <label>여행방 코드 (상대방에게 받은 코드)</label>
+        <input type="text" id="joinRoomCode" placeholder="예: TRIP-3847" style="font-size:18px;font-weight:700;text-align:center;letter-spacing:2px;">
+      </div>
+      <div id="errorJoin" class="setup-error"></div>
+      <button class="btn-setup" onclick="doJoin()">🔑 여행방 참여하기</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ APP ═══════════════════ -->
+<div class="app">
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <div class="header-title" id="headerTitle">✈️ 우리의 여행</div>
+        <div class="header-meta" id="headerMeta">로딩 중...</div>
+      </div>
+      <div class="header-right">
+        <span class="sync-dot gray" id="syncDot" title="동기화 상태"></span>
+        <button class="btn-room" onclick="openModal('modal-room')">🔑 코드 공유</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="content" id="mainContent">
+
+    <!-- ─ SECTION: TRIP ─ -->
+    <div class="section active" id="section-trip">
+      <div class="trip-hero">
+        <div class="emoji">🌍</div>
+        <h2 id="heroTitle">어디로 떠나볼까요?</h2>
+        <p id="heroSub">여행 기본 정보를 입력하면 시작됩니다</p>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">여행 기본 정보</div></div>
+        <div class="form-group">
+          <label>여행 이름 ✏️</label>
+          <input type="text" id="tripName" placeholder="예: 도쿄 벚꽃 여행" oninput="updateTrip()">
+        </div>
+        <div class="form-group">
+          <label>목적지 📍</label>
+          <input type="text" id="tripDestination" placeholder="예: 일본 도쿄" oninput="updateTrip()">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>출발일 📅</label>
+            <input type="date" id="tripStart" onchange="updateTrip()">
+          </div>
+          <div class="form-group">
+            <label>귀국일 📅</label>
+            <input type="date" id="tripEnd" onchange="updateTrip()">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>여행 메모 📝</label>
+          <textarea id="tripMemo" placeholder="여행 테마, 특별한 점 등..." oninput="updateTrip()"></textarea>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">여행자 정보 👥</div></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>여행자 1 🧑</label>
+            <input type="text" id="member1" placeholder="이름 입력" oninput="updateTrip()">
+          </div>
+          <div class="form-group">
+            <label>여행자 2 🧑</label>
+            <input type="text" id="member2" placeholder="이름 입력" oninput="updateTrip()">
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">⚙️ 앱 설정</div></div>
+        <button class="btn btn-outline btn-sm" onclick="openModal('modal-room')" style="margin-right:8px;">🔑 여행방 코드 확인</button>
+        <button class="btn btn-danger btn-sm" onclick="resetSetup()">🔄 다른 방으로</button>
+      </div>
+    </div>
+
+    <!-- ─ SECTION: ITINERARY ─ -->
+    <div class="section" id="section-itinerary">
+      <div id="itineraryContent"></div>
+      <button class="btn-add" onclick="openAddItinerary()">+ 일정 추가하기</button>
+    </div>
+
+    <!-- ─ SECTION: BUDGET ─ -->
+    <div class="section" id="section-budget">
+      <div class="card">
+        <div class="card-header"><div class="card-title">예산 설정 💰</div></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>🗓️ 사전 예산 (원)</label>
+            <div class="amount-wrapper">
+              <span class="amount-prefix">₩</span>
+              <input type="number" id="preBudget" class="amount-input" placeholder="0" onchange="updateBudget()">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>✈️ 여행 중 예산 (원)</label>
+            <div class="amount-wrapper">
+              <span class="amount-prefix">₩</span>
+              <input type="number" id="duringBudget" class="amount-input" placeholder="0" onchange="updateBudget()">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="budgetSummaryBlock"></div>
+      <div class="phase-title-bar pre" id="phaseHeaderPre" style="display:none;">🗓️ 사전 지출 <span id="preSpentBadge" class="badge badge-purple"></span></div>
+      <div id="expenseListPre"></div>
+      <button class="btn-add" id="btnAddPre" onclick="openAddExpense('pre')" style="margin-bottom:16px;">+ 사전 지출 추가</button>
+      <div class="phase-title-bar during" id="phaseHeaderDuring" style="display:none;">✈️ 여행 중 지출 <span id="duringSpentBadge" class="badge badge-blue"></span></div>
+      <div id="expenseListDuring"></div>
+      <button class="btn-add" onclick="openAddExpense('during')">+ 여행 중 지출 추가</button>
+    </div>
+
+    <!-- ─ SECTION: BOOKING ─ -->
+    <div class="section" id="section-booking">
+      <div style="display:flex;gap:8px;margin-bottom:14px;">
+        <button class="btn btn-primary btn-sm" onclick="openAddBooking('accommodation')">🏨 숙소 추가</button>
+        <button class="btn btn-outline btn-sm" onclick="openAddBooking('transport')">✈️ 교통 추가</button>
+      </div>
+      <div id="bookingList"></div>
+    </div>
+
+    <!-- ─ SECTION: CHECKLIST ─ -->
+    <div class="section" id="section-checklist">
+      <div class="check-progress" id="checkProgress"></div>
+      <div id="checklistContent"></div>
+      <button class="btn-add" onclick="openAddCheck()">+ 항목 추가하기</button>
+    </div>
+
+    <!-- ─ SECTION: PLACES ─ -->
+    <div class="section" id="section-places">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
+        <button class="btn btn-primary btn-sm" onclick="openAddPlace('restaurant')">🍽️ 식당</button>
+        <button class="btn btn-outline btn-sm" onclick="openAddPlace('attraction')">🗺️ 관광지</button>
+        <button class="btn btn-outline btn-sm" onclick="openAddPlace('tip')">💡 팁/정보</button>
+        <button class="btn btn-outline btn-sm" onclick="openAddPlace('shop')">🛍️ 쇼핑</button>
+      </div>
+      <div id="placeList"></div>
+    </div>
+
+  </div><!-- /content -->
+
+  <div class="tab-bar">
+    <button class="tab-item active" onclick="switchTab('trip',this)"><span class="tab-icon">🏖️</span><span class="tab-label">여행정보</span></button>
+    <button class="tab-item" onclick="switchTab('itinerary',this)"><span class="tab-icon">📅</span><span class="tab-label">일정</span></button>
+    <button class="tab-item" onclick="switchTab('budget',this)"><span class="tab-icon">💰</span><span class="tab-label">예산</span></button>
+    <button class="tab-item" onclick="switchTab('booking',this)"><span class="tab-icon">🏨</span><span class="tab-label">숙소/교통</span></button>
+    <button class="tab-item" onclick="switchTab('checklist',this)"><span class="tab-icon">✅</span><span class="tab-label">체크리스트</span></button>
+    <button class="tab-item" onclick="switchTab('places',this)"><span class="tab-icon">📍</span><span class="tab-label">장소</span></button>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modal-room">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🔑 여행방 공유</div>
+    <div class="room-code-box">
+      <div class="room-code-label">여행방 코드</div>
+      <div class="room-code-value" id="roomCodeDisplay">-</div>
+    </div>
+    <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">
+      위 코드를 <strong>카카오톡</strong>으로 전달하세요!<br>
+      상대방이 이 HTML 파일을 열고 코드를 입력하면<br>
+      모든 내용이 <strong>실시간으로 동기화</strong>됩니다.
+    </p>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="copyRoomCode()">📋 코드 복사하기</button>
+    <div style="margin-top:8px;">
+      <button class="btn btn-outline" style="width:100%;justify-content:center;margin-top:0;" onclick="closeModal('modal-room')">닫기</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-itinerary">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">📅 일정 추가</div>
+    <div class="form-group"><label>날짜</label><input type="date" id="iDate"></div>
+    <div class="form-row">
+      <div class="form-group"><label>시간</label><input type="time" id="iTime"></div>
+      <div class="form-group"><label>카테고리</label>
+        <select id="iCategory">
+          <option value="🍽️">🍽️ 식사</option><option value="🗺️">🗺️ 관광</option>
+          <option value="🛍️">🛍️ 쇼핑</option><option value="🏨">🏨 숙소</option>
+          <option value="✈️">✈️ 이동</option><option value="☕">☕ 카페</option>
+          <option value="🎭">🎭 체험</option><option value="📌">📌 기타</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group"><label>활동명</label><input type="text" id="iActivity" placeholder="예: 신주쿠 점심"></div>
+    <div class="form-group"><label>메모 (선택)</label><input type="text" id="iNote" placeholder="예: 예약 필요, 주소 등"></div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('modal-itinerary')">취소</button>
+      <button class="btn btn-primary" onclick="saveItinerary()">저장</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-expense">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="expenseModalTitle">💰 지출 추가</div>
+    <input type="hidden" id="ePhase" value="pre">
+    <div class="form-group"><label>날짜</label><input type="date" id="eDate"></div>
+    <div class="form-row">
+      <div class="form-group"><label>카테고리</label>
+        <select id="eCategory">
+          <option value="🍽️ 식비">🍽️ 식비</option><option value="✈️ 교통">✈️ 교통</option>
+          <option value="🏨 숙박">🏨 숙박</option><option value="🛍️ 쇼핑">🛍️ 쇼핑</option>
+          <option value="🎭 체험">🎭 체험</option><option value="☕ 카페">☕ 카페</option>
+          <option value="💊 의료">💊 의료</option><option value="📌 기타">📌 기타</option>
+        </select>
+      </div>
+      <div class="form-group"><label>금액 (원)</label>
+        <div class="amount-wrapper">
+          <span class="amount-prefix">₩</span>
+          <input type="number" id="eAmount" class="amount-input" placeholder="0">
+        </div>
+      </div>
+    </div>
+    <div class="form-group"><label>내용</label><input type="text" id="eDesc" placeholder="예: 라멘 점심"></div>
+    <div class="form-group"><label>결제자</label>
+      <select id="ePayer">
+        <option value="">선택</option>
+        <option id="payerOpt1"></option>
+        <option id="payerOpt2"></option>
+        <option value="공동">공동</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('modal-expense')">취소</button>
+      <button class="btn btn-primary" onclick="saveExpense()">저장</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-booking">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="bookingModalTitle">🏨 숙소 추가</div>
+    <input type="hidden" id="bookingType">
+    <div class="form-group"><label>이름</label><input type="text" id="bName" placeholder="예: 신주쿠 호텔"></div>
+    <div class="form-row">
+      <div class="form-group"><label>날짜/시간 (시작)</label><input type="datetime-local" id="bFrom"></div>
+      <div class="form-group"><label>날짜/시간 (종료)</label><input type="datetime-local" id="bTo"></div>
+    </div>
+    <div class="form-group"><label>예약번호</label><input type="text" id="bCode" placeholder="예: ABC123"></div>
+    <div class="form-group"><label>주소 / 메모</label><textarea id="bNote" placeholder="주소, 전화번호, 메뉴 등"></textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('modal-booking')">취소</button>
+      <button class="btn btn-primary" onclick="saveBooking()">저장</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-check">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">✅ 체크리스트 항목 추가</div>
+    <div class="form-group"><label>카테고리</label>
+      <input type="text" id="cCategory" list="catList" placeholder="예: 서류, 의류, 세면도구">
+      <datalist id="catList">
+        <option value="서류"><option value="의류"><option value="세면도구">
+        <option value="전자기기"><option value="의약품"><option value="여행용품"><option value="기타">
+      </datalist>
+    </div>
+    <div class="form-group"><label>항목명</label><input type="text" id="cItem" placeholder="예: 여권, 충전기"></div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('modal-check')">취소</button>
+      <button class="btn btn-primary" onclick="saveCheck()">저장</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-place">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="placeModalTitle">📍 장소 추가</div>
+    <input type="hidden" id="pType">
+    <div class="form-group"><label>이름</label><input type="text" id="pName" placeholder="예: 이치란 라멘 신주쿠점"></div>
+    <div class="form-group"><label>주소 (선택)</label><input type="text" id="pAddress" placeholder="주소 입력"></div>
+    <div class="form-group"><label>메모 / 팁</label><textarea id="pNote" placeholder="영업시간, 추천 메뉴, 예약 여부 등"></textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('modal-place')">취소</button>
+      <button class="btn btn-primary" onclick="savePlace()">저장</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─────────────────────────────────────────────────
+// FIREBASE GLOBALS
+// ─────────────────────────────────────────────────
+const HARDCODED_FB_CONFIG = {
+  apiKey: "AIzaSyCM2JnTnKU3Kmg--2AUV7wCvDJYFcewkNY",
+  authDomain: "raandna-7b775.firebaseapp.com",
+  databaseURL: "https://raandna-7b775-default-rtdb.firebaseio.com",
+  projectId: "raandna-7b775",
+  storageBucket: "raandna-7b775.firebasestorage.app",
+  messagingSenderId: "391225224667",
+  appId: "1:391225224667:web:a30e7ed0ba4680a4730bfe"
+};
+
+let _db = null;
+let _roomId = null;
+let _syncTimer = null;
+let _isRemote = false;
+let _isInitialized = false;
+const FB_KEY = 'tp_fb_cfg_v1';
+const ROOM_KEY = 'tp_room_v1';
+const LOCAL_KEY = 'tp_state_v1';
+
+// ─────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────
+let state = {
+  trip: { name:'', destination:'', start:'', end:'', memo:'', m1:'', m2:'' },
+  itinerary: [],
+  budget: { preBudget:0, duringBudget:0, expenses:[] },
+  bookings: [],
+  checklist: [],
+  places: []
+};
+
+const DEFAULT_CHECKLIST = [
+  {cat:'서류',item:'여권'},{cat:'서류',item:'비행기 티켓'},
+  {cat:'서류',item:'숙소 예약 확인서'},{cat:'서류',item:'여행자 보험'},
+  {cat:'의류',item:'속옷 (일수만큼)'},{cat:'의류',item:'양말'},
+  {cat:'의류',item:'겉옷/재킷'},{cat:'의류',item:'편한 신발'},
+  {cat:'세면도구',item:'칫솔/치약'},{cat:'세면도구',item:'샴푸/바디워시'},
+  {cat:'세면도구',item:'스킨케어'},{cat:'세면도구',item:'면도기'},
+  {cat:'전자기기',item:'스마트폰 충전기'},{cat:'전자기기',item:'보조배터리'},
+  {cat:'전자기기',item:'입맀어폰'},{cat:'전자기기',item:'카메라'},
+  {cat:'의약품',item:'두통약'},{cat:'의약품',item:'소화제'},
+  {cat:'의약품',item:'밴드'},{cat:'여행용품',item:'여행용 파우치'},
+];
+
+// ─────────────────────────────────────────────────
+// FIREBASE FUNCTIONS
+// ─────────────────────────────────────────────────
+function setSyncStatus(status) { // 'syncing' | 'ok' | 'error' | 'offline'
+  const dot = document.getElementById('syncDot');
+  dot.className = 'sync-dot';
+  if (status === 'syncing') dot.classList.add('yellow');
+  else if (status === 'ok') dot.classList.add('green');
+  else if (status === 'error') dot.classList.add('red');
+  else dot.classList.add('gray');
+}
+
+function parseFirebaseConfig(input) {
+  const s = input.trim();
+  try { return JSON.parse(s); } catch(e) {}
+  try {
+    const m = s.match(/\{[\s\S]+\}/);
+    if (m) return JSON.parse(m[0]);
+  } catch(e) {}
+  return null;
+}
+
+function doCreate() {
+  const errEl = document.getElementById('errorCreate');
+  errEl.style.display = 'none';
+  const cfg = HARDCODED_FB_CONFIG;
+  const roomId = 'TRIP-' + Math.random().toString(36).slice(2,6).toUpperCase();
+  try {
+    localStorage.setItem(FB_KEY, JSON.stringify(cfg));
+    localStorage.setItem(ROOM_KEY, roomId);
+  } catch(e) {}
+  connectFirebase(cfg, roomId);
+}
+
+function doJoin() {
+  const code = document.getElementById('joinRoomCode').value.trim().toUpperCase();
+  const errEl = document.getElementById('errorJoin');
+  if (!code) { errEl.textContent = '⚠️ 여행방 코드를 입력해주세요.'; errEl.style.display='block'; return; }
+  errEl.style.display = 'none';
+  const cfg = HARDCODED_FB_CONFIG;
+  try {
+    localStorage.setItem(FB_KEY, JSON.stringify(cfg));
+    localStorage.setItem(ROOM_KEY, code);
+  } catch(e) {}
+  connectFirebase(cfg, code);
+}
+
+function connectFirebase(cfg, roomId) {
+  try {
+    if (firebase.apps.length > 0) firebase.apps[0].delete();
+    firebase.initializeApp(cfg);
+    _db = firebase.database();
+    _roomId = roomId;
+    document.getElementById('roomCodeDisplay').textContent = roomId;
+    setSyncStatus('syncing');
+
+    _db.ref('trips/' + roomId).on('value', (snap) => {
+      const data = snap.val();
+      if (data && !_isRemote) {
+        const incoming = JSON.stringify(data);
+        const current = JSON.stringify(state);
+        if (incoming !== current) {
+          state = data;
+          saveLocal();
+          renderAll();
+        }
+      }
+      setSyncStatus('ok');
+    }, (err) => { setSyncStatus('error'); showToast('동기화 오류: ' + err.message); });
+
+    hideSetup();
+    _isInitialized = true;
+    if (state.checklist.length === 0) {
+      state.checklist = DEFAULT_CHECKLIST.map((c,i) => ({id:'c'+i, category:c.cat, item:c.item, checked:false}));
+    }
+    renderAll();
+    showToast('� 여행방 연결됨: ' + roomId);
+  } catch(e) {
+    document.getElementById('errorCreate').textContent = '⚠️ Firebase 연결 실패: ' + e.message;
+    document.getElementById('errorCreate').style.display = 'block';
+    document.getElementById('errorJoin').textContent = '⚠️ Firebase 연결 실패: ' + e.message;
+    document.getElementById('errorJoin').style.display = 'block';
+    setSyncStatus('error');
+  }
+}
+
+function pushToFirebase() {
+  if (!_db || !_roomId) return;
+  clearTimeout(_syncTimer);
+  setSyncStatus('syncing');
+  _syncTimer = setTimeout(() => {
+    _isRemote = true;
+    _db.ref('trips/' + _roomId).set(state)
+      .then(() => { setSyncStatus('ok'); })
+      .catch(() => { setSyncStatus('error'); showToast('동기화 실패 — 인터넷을 확인해주세요'); })
+      .finally(() => { _isRemote = false; });
+  }, 600);
+}
+
+function saveLocal() {
+  try { localStorage.setItem(LOCAL_KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+function saveState() {
+  saveLocal();
+  pushToFirebase();
+}
+
+function hideSetup() {
+  document.getElementById('setupOverlay').style.display = 'none';
+}
+
+function resetSetup() {
+  if (!confirm('다른 여행방으로 이동하시겠어요? 현재 기기의 저장 데이터는 유지됩니다.')) return;
+  try { localStorage.removeItem(FB_KEY); localStorage.removeItem(ROOM_KEY); } catch(e) {}
+  location.reload();
+}
+
+function copyRoomCode() {
+  const code = _roomId || '';
+  if (!code) return;
+  const msg = `✈️ 여행 플래너 초대!\n방 코드: ${code}\n\n1. 여행 플래너 HTML 파일을 열어요\n2. "기존 방 참여"를 선택하고\n3. 위 코드를 입력하면 같이 볼 수 있어요!`;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(msg).then(() => showToast('초대 메시지가 복사됐어요! 카카오톡으로 보내세요 💬'));
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = msg; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    showToast('초대 메시지가 복사됐어요! 카카오톡으로 보내세요 💬');
+  }
+}
+
+// Setup tab switcher
+function switchSetupTab(tab) {
+  document.getElementById('tabCreate').classList.toggle('active', tab==='create');
+  document.getElementById('tabJoin').classList.toggle('active', tab==='join');
+  document.getElementById('panelCreate').classList.toggle('active', tab==='create');
+  document.getElementById('panelJoin').classList.toggle('active', tab==='join');
+}
+
+// ─────────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────────
+function init() {
+  // Load local state first for fast render
+  try {
+    const saved = localStorage.getItem(LOCAL_KEY);
+    if (saved) state = JSON.parse(saved);
+  } catch(e) {}
+  if (state.checklist.length === 0) {
+    state.checklist = DEFAULT_CHECKLIST.map((c,i) => ({id:'c'+i, category:c.cat, item:c.item, checked:false}));
+  }
+
+  // Check for saved Firebase config
+  let cfg = null, roomId = null;
+  try {
+    const s = localStorage.getItem(FB_KEY);
+    if (s) cfg = JSON.parse(s);
+    roomId = localStorage.getItem(ROOM_KEY);
+  } catch(e) {}
+
+  if (roomId) {
+    // 저장된 방 코드가 있으면 바로 연결
+    connectFirebase(HARDCODED_FB_CONFIG, roomId);
+  } else {
+    document.getElementById('setupOverlay').style.display = 'block';
+    setSyncStatus('gray');
+  }
+  renderAll();
+}
+
+// ─────────────────────────────────────────────────
+// RENDER ALL
+// ─────────────────────────────────────────────────
+function renderAll() {
+  renderHeader();
+  renderTrip();
+  renderItinerary();
+  renderBudget();
+  renderBooking();
+  renderChecklist();
+  renderPlaces();
+}
+
+// ─────────────────────────────────────────────────
+// HEADER & TRIP
+// ─────────────────────────────────────────────────
+function renderHeader() {
+  const t = state.trip;
+  document.getElementById('headerTitle').textContent = t.name || '✈️ 우리의 여행';
+  let meta = '';
+  if (t.destination) meta += t.destination;
+  if (t.start && t.end) meta += (meta?' · ':'') + fmtDate(t.start)+' ~ '+fmtDate(t.end)+' ('+calcDays(t.start,t.end)+'박)';
+  if (t.m1||t.m2) meta += (meta?' · ':'')+[t.m1,t.m2].filter(Boolean).join(' & ');
+  document.getElementById('headerMeta').textContent = meta || (_roomId ? '여행방: '+_roomId : '여행 정보를 입력하세요');
+  document.getElementById('heroTitle').textContent = t.destination || '어디로 떠나볼까요?';
+  document.getElementById('heroSub').textContent = t.name || '여행 기본 정보를 입력하면 시작됩니다';
+  if (_roomId) document.getElementById('roomCodeDisplay').textContent = _roomId;
+}
+
+function renderTrip() {
+  const t = state.trip;
+  document.getElementById('tripName').value = t.name||'';
+  document.getElementById('tripDestination').value = t.destination||'';
+  document.getElementById('tripStart').value = t.start||'';
+  document.getElementById('tripEnd').value = t.end||'';
+  document.getElementById('tripMemo').value = t.memo||'';
+  document.getElementById('member1').value = t.m1||'';
+  document.getElementById('member2').value = t.m2||'';
+}
+
+function updateTrip() {
+  state.trip.name = document.getElementById('tripName').value;
+  state.trip.destination = document.getElementById('tripDestination').value;
+  state.trip.start = document.getElementById('tripStart').value;
+  state.trip.end = document.getElementById('tripEnd').value;
+  state.trip.memo = document.getElementById('tripMemo').value;
+  state.trip.m1 = document.getElementById('member1').value;
+  state.trip.m2 = document.getElementById('member2').value;
+  renderHeader(); updatePayerOptions(); saveState();
+}
+
+function updatePayerOptions() {
+  const p1 = document.getElementById('payerOpt1');
+  const p2 = document.getElementById('payerOpt2');
+  p1.value = state.trip.m1||'여행자1'; p1.textContent = state.trip.m1||'여행자1';
+  p2.value = state.trip.m2||'여행자2'; p2.textContent = state.trip.m2||'여행자2';
+}
+
+// ─────────────────────────────────────────────────
+// ITINERARY
+// ─────────────────────────────────────────────────
+function renderItinerary() {
+  const el = document.getElementById('itineraryContent');
+  if (!state.itinerary.length) { el.innerHTML=`<div class="empty"><div class="empty-icon">📅</div><p>아직 일정이 없어요.<br>일정을 추가해 보세요!</p></div>`; return; }
+  const grouped = {};
+  state.itinerary.forEach(i => { if (!grouped[i.date]) grouped[i.date]=[]; grouped[i.date].push(i); });
+  let day = 1;
+  el.innerHTML = Object.keys(grouped).sort().map(date => {
+    const items = grouped[date].sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+    return `<div class="day-block">
+      <div class="day-header"><div class="day-dot">D${day++}</div><div class="day-label">${fmtDateKR(date)}</div></div>
+      ${items.map(it=>`<div class="itinerary-item">
+        <div class="itinerary-time">${it.time||'--:--'}</div>
+        <div class="itinerary-content">
+          <div class="itinerary-activity">${it.category} ${esc(it.activity)}</div>
+          ${it.note?`<div class="itinerary-note">${esc(it.note)}</div>`:''}
+        </div>
+        <div class="item-actions"><button class="btn-icon" onclick="deleteItem('itinerary','${it.id}')">🗑️</button></div>
+      </div>`).join('')}
+    </div>`;
+  }).join('');
+}
+
+function openAddItinerary() {
+  document.getElementById('iDate').value = state.trip.start||today();
+  document.getElementById('iTime').value=''; document.getElementById('iActivity').value=''; document.getElementById('iNote').value='';
+  openModal('modal-itinerary');
+}
+
+function saveItinerary() {
+  const activity = document.getElementById('iActivity').value.trim();
+  const date = document.getElementById('iDate').value;
+  if (!activity) { showToast('활동명을 입력해주세요'); return; }
+  if (!date) { showToast('날짜를 선택해주세요'); return; }
+  state.itinerary.push({ id:uid(), date, time:document.getElementById('iTime').value, category:document.getElementById('iCategory').value, activity, note:document.getElementById('iNote').value });
+  closeModal('modal-itinerary'); renderItinerary(); saveState(); showToast('일정이 추가됐어요 ✅');
+}
+
+// ─────────────────────────────────────────────────
+// BUDGET
+// ─────────────────────────────────────────────────
+function updateBudget() {
+  state.budget.preBudget = parseInt(document.getElementById('preBudget').value)||0;
+  state.budget.duringBudget = parseInt(document.getElementById('duringBudget').value)||0;
+  renderBudget(); saveState();
+}
+
+function renderBudget() {
+  document.getElementById('preBudget').value = state.budget.preBudget||'';
+  document.getElementById('duringBudget').value = state.budget.duringBudget||'';
+  const expenses = state.budget.expenses||[];
+  const preBudget = state.budget.preBudget||0, duringBudget = state.budget.duringBudget||0;
+  const totalBudget = preBudget+duringBudget;
+  const preExp = expenses.filter(e=>(e.phase||'during')==='pre');
+  const durExp = expenses.filter(e=>(e.phase||'during')==='during');
+  const preSpent = preExp.reduce((s,e)=>s+(parseInt(e.amount)||0),0);
+  const durSpent = durExp.reduce((s,e)=>s+(parseInt(e.amount)||0),0);
+  const totalSpent = preSpent+durSpent, rem = totalBudget-totalSpent;
+  const pct = totalBudget>0?Math.min(100,Math.round(totalSpent/totalBudget*100)):0;
+  let sc='ok',fc=''; if(pct>=90){sc='over';fc='over';}else if(pct>=70){sc='warn';fc='warn';}
+
+  document.getElementById('budgetSummaryBlock').innerHTML = totalBudget>0?`
+    <div class="budget-summary">
+      <div class="budget-row"><span style="color:var(--gray-600)">전체 예산</span><span class="budget-total">${fmtMoney(totalBudget)}</span></div>
+      <div class="budget-row" style="font-size:13px"><span style="color:#6d28d9">🗓️ 사전</span><span style="color:#6d28d9;font-weight:700">${fmtMoney(preBudget)}</span></div>
+      <div class="budget-row" style="font-size:13px"><span style="color:var(--primary)">✈️ 여행 중</span><span style="color:var(--primary);font-weight:700">${fmtMoney(duringBudget)}</span></div>
+      <hr style="border:none;border-top:1px solid var(--gray-200);margin:8px 0">
+      <div class="budget-row"><span style="color:var(--gray-600)">총 지출</span><span style="font-weight:700">${fmtMoney(totalSpent)}</span></div>
+      <div class="budget-row"><span style="color:var(--gray-600)">남은 예산</span><span class="budget-remaining ${sc}">${rem>=0?fmtMoney(rem):'초과 '+fmtMoney(-rem)}</span></div>
+      <div class="progress-bar"><div class="progress-fill ${fc}" style="width:${pct}%"></div></div>
+      <div style="text-align:right;font-size:11px;color:var(--gray-400);margin-top:4px">${pct}% 사용</div>
+    </div>` : '';
+
+  document.getElementById('phaseHeaderPre').style.display='block';
+  document.getElementById('preSpentBadge').textContent = preExp.length?fmtMoney(preSpent)+' 사용':'';
+  document.getElementById('expenseListPre').innerHTML = preExp.length?renderExpenseItems(preExp)
+    :`<div class="empty" style="padding:16px"><div class="empty-icon" style="font-size:28px">🗓️</div><p style="font-size:13px">항공권, 숙소 예약금 등<br>여행 전 지출을 기록하세요</p></div>`;
+  document.getElementById('phaseHeaderDuring').style.display='block';
+  document.getElementById('duringSpentBadge').textContent = durExp.length?fmtMoney(durSpent)+' 사용':'';
+  document.getElementById('expenseListDuring').innerHTML = durExp.length?renderExpenseItems(durExp)
+    :`<div class="empty" style="padding:16px"><div class="empty-icon" style="font-size:28px">✈️</div><p style="font-size:13px">식비, 교통비 등<br>여행 중 지출을 기록하세요</p></div>`;
+}
+
+function renderExpenseItems(list) {
+  return [...list].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).map(e=>`
+    <div class="expense-item">
+      <div class="expense-icon">${e.category.split(' ')[0]}</div>
+      <div class="expense-content">
+        <div class="expense-desc">${esc(e.desc)}</div>
+        <div class="expense-meta">${e.date?fmtDate(e.date):''} · ${esc(e.category.split(' ').slice(1).join(' '))}${e.payer?' · '+esc(e.payer):''}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
+        <div class="expense-amount">${fmtMoney(e.amount)}</div>
+        <button class="btn-icon" onclick="deleteItem('expense','${e.id}')">🗑️</button>
+      </div>
+    </div>`).join('');
+}
+
+function openAddExpense(phase) {
+  updatePayerOptions();
+  document.getElementById('ePhase').value = phase;
+  document.getElementById('expenseModalTitle').textContent = phase==='pre'?'🗓️ 사전 지출 추가':'✈️ 여행 중 지출 추가';
+  document.getElementById('eDate').value = phase==='pre'?today():(state.trip.start||today());
+  document.getElementById('eAmount').value=''; document.getElementById('eDesc').value=''; document.getElementById('ePayer').value='';
+  document.getElementById('eCategory').value = phase==='pre'?'✈️ 교통':'🍽️ 식비';
+  openModal('modal-expense');
+}
+
+function saveExpense() {
+  const desc = document.getElementById('eDesc').value.trim();
+  const amount = parseInt(document.getElementById('eAmount').value)||0;
+  if (!desc) { showToast('내용을 입력해주세요'); return; }
+  if (!amount) { showToast('금액을 입력해주세요'); return; }
+  state.budget.expenses.push({ id:uid(), phase:document.getElementById('ePhase').value||'during', date:document.getElementById('eDate').value, category:document.getElementById('eCategory').value, desc, amount, payer:document.getElementById('ePayer').value });
+  closeModal('modal-expense'); renderBudget(); saveState();
+  showToast(document.getElementById('ePhase').value==='pre'?'사전 지출 기록됐어요 🗓️':'여행 중 지출 기록됐어요 ✈️');
+}
+
+// ─────────────────────────────────────────────────
+// BOOKING
+// ─────────────────────────────────────────────────
+function renderBooking() {
+  const el = document.getElementById('bookingList');
+  if (!state.bookings.length) { el.innerHTML=`<div class="empty"><div class="empty-icon">🏨</div><p>숙소/교통 정보를 추가해보세요!</p></div>`; return; }
+  const acc = state.bookings.filter(b=>b.type==='accommodation');
+  const trans = state.bookings.filter(b=>b.type==='transport');
+  let html = '';
+  if (acc.length) { html+=`<div class="check-category">🏨 숙소</div>`; html+=acc.map(b=>bookingCard(b)).join(''); }
+  if (trans.length) { html+=`<div class="check-category">✈️ 교통</div>`; html+=trans.map(b=>bookingCard(b)).join(''); }
+  el.innerHTML = html;
+}
+
+function bookingCard(b) {
+  const icon = b.type==='accommodation'?'🏨':'✈️';
+  return `<div class="booking-item">
+    <div class="booking-name">${icon} ${esc(b.name)} <button class="btn-icon" onclick="deleteItem('booking','${b.id}')">🗑️</button></div>
+    ${b.from?`<div class="booking-detail"><span>시작</span><strong>${fmtDateTime(b.from)}</strong></div>`:''}
+    ${b.to?`<div class="booking-detail"><span>종료</span><strong>${fmtDateTime(b.to)}</strong></div>`:''}
+    ${b.code?`<div class="booking-detail"><span>예약번호</span><span class="booking-code">${esc(b.code)}</span></div>`:''}
+    ${b.note?`<div class="booking-detail" style="flex-direction:column"><span>메모</span><span>${esc(b.note)}</span></div>`:''}
+  </div>`;
+}
+
+function openAddBooking(type) {
+  document.getElementById('bookingType').value=type;
+  document.getElementById('bookingModalTitle').textContent=type==='accommodation'?'🏨 숙소 추가':'✈️ 교통 추가';
+  ['bName','bCode','bNote'].forEach(id=>document.getElementById(id).value='');
+  ['bFrom','bTo'].forEach(id=>document.getElementById(id).value='');
+  openModal('modal-booking');
+}
+
+function saveBooking() {
+  const name=document.getElementById('bName').value.trim();
+  if (!name){showToast('이름을 입력해주세요');return;}
+  state.bookings.push({id:uid(),type:document.getElementById('bookingType').value,name,from:document.getElementById('bFrom').value,to:document.getElementById('bTo').value,code:document.getElementById('bCode').value,note:document.getElementById('bNote').value});
+  closeModal('modal-booking');renderBooking();saveState();showToast('예약 정보 추가됐어요 ✅');
+}
+
+// ─────────────────────────────────────────────────
+// CHECKLIST
+// ─────────────────────────────────────────────────
+function renderChecklist() {
+  const all = state.checklist, done=all.filter(c=>c.checked).length;
+  document.getElementById('checkProgress').innerHTML<`<strong>${done}</strong> / ${all.length} 완료 ${done===all.length&&all.length>0?'🎉 준비 완료!':''}`;
+  const grouped={};
+  all.forEach(c=>{if(!grouped[c.category])grouped[c.category]=[];grouped[c.category].push(c);});
+  document.getElementById('checklistContent').innerHTML=Object.keys(grouped).map(cat=>`
+    <div class="check-category">${esc(cat)}</div>
+    ${grouped[cat].map(c=>`<div class="check-item ${c.checked?'checked':''}" onclick="toggleCheck('${c.id}')">
+      <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+      <span class="check-label">${esc(c.item)}</span>
+      <button class="btn-icon" onclick="event.stopPropagation();deleteItem('checklist','${c.id}')">🗑️</button>
+    </div>`).join('')}`).join('') || `<div class="empty"><div class="empty-icon">✅</div><p>체크리스트가 없어요.</p></div>`;
+}
+
+function toggleCheck(id) {
+  const item=state.checklist.find(c=>c.id===id);
+  if(item){item.checked=!item.checked;renderChecklist();saveState();}
+}
+
+function openAddCheck(){document.getElementById('cCategory').value='';document.getElementById('cItem').value='';openModal('modal-check');}
+function saveCheck(){
+  const category=document.getElementById('cCategory').value.trim(),item=document.getElementById('cItem').value.trim();
+  if(!category||!item){showToast('카테고리와 항목을 모두 입력해주세요');return;}
+  state.checklist.push({id:uid(),category,item,checked:false});
+  closeModal('modal-check');renderChecklist();saveState();showToast('항목 추가됐어요 ✅');
+}
+
+// ─────────────────────────────────────────────────
+// PLACES
+// ─────────────────────────────────────────────────
+const PLACE_CFG = {restaurant:{emoji:'🍽️',label:'식당'},attraction:{emoji:'🗺️',label:'관광지'},tip:{emoji:'💡',label:'팁/정보'},shop:{emoji:'🛍️',label:'쇼핑'}};
+
+function renderPlaces() {
+  const el = document.getElementById('placeList');
+  if (!state.places.length) { el.innerHTML=`<div class="empty"><div class="empty-icon">📍</div><p>가고 싶은 식당, 관광지를<br>저장해두세요!</p></div>`; return; }
+  let html='';
+  ['restaurant','attraction','shop','tip'].forEach(type=>{
+    const items=state.places.filter(p=>p.type===type); if(!items.length)return;
+    const cfg=PLACE_CFG[type];
+    html+=`<div class="check-category">${cfg.emoji} ${cfg.label}</div>`;
+    html+=items.map(p=>`<div class="place-item">
+      <div class="place-emoji">${cfg.emoji}</div>
+      <div class="place-content">
+        <div class="place-name">${esc(p.name)}<span class="star" onclick="toggleStar('${p.id}')">${p.starred?'⭐':'☆'}</span></div>
+        ${p.address?`<div class="place-address">📍 ${esc(p.address)}</div>`:''}
+        ${p.note?`<div class="place-note">${esc(p.note)}</div>`:''}
+      </div>
+      <button class="btn-icon" onclick="deleteItem('place','${p.id}')">🗑️</button>
+    </div>`).join('');
+  });
+  el.innerHTML = html;
+}
+
+function toggleStar(id){const p=state.places.find(x=>x.id===id);if(p){p.starred=!p.starred;renderPlaces();saveState();}}
+
+function openAddPlace(type){
+  document.getElementById('pType').value=type;
+  document.getElementById('placeModalTitle').textContent=PLACE_CFG[type].emoji+' '+PLACE_CFG[type].label+' 추가';
+  ['pName','pAddress','pNote'].forEach(id=>document.getElementById(id).value='');
+  openModal('modal-place');
+}
+function savePlace(){
+  const name=document.getElementById('pName').value.trim();
+  if(!name){showToast('이름을 입력해주세요');return;}
+  state.places.push({id:uid(),type:document.getElementById('pType').value,name,address:document.getElementById('pAddress').value,note:document.getElementById('pNote').value,starred:false});
+  closeModal('modal-place');renderPlaces();saveState();showToast('장소 저장됐어요 📍');
+}
+
+// ─────────────────────────────────────────────────
+// DELETE
+// ─────────────────────────────────────────────────
+function deleteItem(type,id){
+  if(!confirm('삭제하시겠어요?'))return;
+  if(type==='itinerary')state.itinerary=state.itinerary.filter(i=>i.id!==id);
+  else if(type==='expense')state.budget.expenses=state.budget.expenses.filter(i=>i.id!==id);
+  else if(type==='booking')state.bookings=state.bookings.filter(i=>i.id!==id);
+  else if(type==='checklist')state.checklist=state.checklist.filter(i=>i.id!==id);
+  else if(type==='place')state.places=state.places.filter(i=>i.id!==id);
+  renderAll();saveState();
+}
+
+// ─────────────────────────────────────────────────
+// TABS / MODALS / UTILS
+// ─────────────────────────────────────────────────
+function switchTab(tab,el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
+  document.getElementById('section-'+tab).classList.add('active');
+  el.classList.add('active');
+  document.getElementById('mainContent').scrollTop=0;
+}
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-overlay').forEach(el=>{el.addEventListener('click',function(e){if(e.target===this)closeModal(this.id);});});
+
+function uid(){return Math.random().toString(36).slice(2,10);}
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function today(){return new Date().toISOString().slice(0,10);}
+function fmtMoney(n){return '₩'+parseInt(n||0).toLocaleString('ko-KR');}
+function fmtDate(d){if(!d)return'';const[y,m,day]=d.split('-');return`${parseInt(m)}/${parseInt(day)}`;}
+function fmtDateKR(d){if(!d)return'';const[y,m,day]=d.split('-');const days=['일','월','화','수','목','금','토'];const wd=new Date(d).getDay();return`${y}년 ${parseInt(m)}월 ${parseInt(day)}일 (${days[wd]})`;}
+function fmtDateTime(dt){if(!dt)return'';const[date,time]=dt.split('T');const[y,m,d]=date.split('-');return`${parseInt(m)}.${parseInt(d)} ${time||''}`;}
+function calcDays(start,end){if(!start||!end)return 0;return Math.round((new Date(end)-new Date(start))/86400000);}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+
+// ─────────────────────────────────────────────────
+// START
+// ─────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>
